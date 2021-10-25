@@ -5,7 +5,8 @@ import { useRouter } from "next/router";
 import {InputContainer, BottomContainer, ButtonStyle, SmallInputs, Column} from "../cadastrar-plano/style"
 import { Checkbox } from '@material-ui/core';
 import { useToasts } from "@geist-ui/react";
-import * as accounts from "@services/planos"
+import * as accounts from "@services/planos";
+import { formatPrice } from "@utils/formatPrice"
 
 export default function AtualizarPlano() {
     const router = useRouter();
@@ -123,7 +124,7 @@ if(Array.isArray(appNumbers)) {
                             </div>
                             <div>
                                 <span>Valor da Mensalidade</span>
-                                <input type="text"  value={value} onChange={(e) => setValue(Number(e.target.value))}/>
+                                <input type="text"  value={value.toFixed(2)} onChange={(e) => setValue(Number(e.target.value))}/>
                             </div>
                         </div>
                     </Column>

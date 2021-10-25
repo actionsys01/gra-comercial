@@ -11,6 +11,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import { Pages } from "../../styles/pages";
 import { Modal } from "../../styles/modal"
 import { useToasts} from "@geist-ui/react";
+import { capitalize, comparations } from "@utils/sort"
 
 interface AccountsProps {
     id: number;
@@ -116,6 +117,7 @@ export default function Planos() {
             accountData.forEach((item) => {
                 allData.push({
                     ...item,
+                    nome: capitalize(item.nome),
                     option: <Popover content={[
                         {optionName: "Editar", 
                         onClick: () => {const apps = item.aplicacoes;
@@ -127,7 +129,7 @@ export default function Planos() {
                 })
             })
         }
-        return allData
+        return allData.sort(comparations)
       }, [accountData])
 
 

@@ -40,7 +40,8 @@ export default function CadastrarEmpresa() {
     }, [])
 
 
-    async function createCompany() {
+    async function createCompany(e: any) {
+        e.preventDefault()
         try {
             if(!socialName || !company || !cnpj || !email ) {
                 setToast({
@@ -71,25 +72,26 @@ export default function CadastrarEmpresa() {
             <BotaoVoltar />
             <h2>Cadastrar Empresa</h2>
             <CompanyRegister>
-                <div>
+                <form onSubmit={createCompany}>
                     <div className="container">
-                    <div className="label"><h6>Empresa</h6></div>
-                        <div className="input-style">
+                        <div>
+                            <span >Empresa</span>
                             <input type="text" onChange={(e) => setCompany(e.target.value)}/>
                         </div>
-                        <div className="label"><h6>Razão Social</h6></div>
-                        <div className="input-style">
+                        <div>
+                            <span>Razão Social</span>
                             <input type="text" onChange={(e) => setSocialName(e.target.value)}/>
                         </div>
-                        <div className="label"><h6>E-mail</h6></div>
-                        <div className="input-style">
-                            <input type="text" onChange={(e) => setEmail(e.target.value)}/>
+                        <div >
+                            <span>E-mail</span>
+                            <input type="email" onChange={(e) => setEmail(e.target.value)}/>
                         </div>
-                        <div className="label"><h6>CNPJ</h6></div>
-                        <div className="input-style">
+                        <div>
+                            <span>CNPJ</span>
                             <input type="text" onChange={(e) => setCnpj(e.target.value)}/>
                         </div>
-                        <div className="label"><h6>Plano</h6></div>
+                        <div>
+                        <span>Plano</span>
                         <select onChange={(e: any) => setAccount(e.target.value)}>
                             {accountData.map((item, i ) => (
                                 <option key={i} value={item.id}>
@@ -97,14 +99,15 @@ export default function CadastrarEmpresa() {
                                 </option>
                             ))}
                         </select>
+                        </div>
                     </div>
-                </div>
+                    <BottomConfirmBtn>
+                    <button type="submit">
+                        Confirmar
+                    </button>
+                </BottomConfirmBtn>
+                </form>
             </CompanyRegister>
-            <BottomConfirmBtn>
-                <button onClick={createCompany}>
-                    Confirmar
-                </button>
-            </BottomConfirmBtn>
         </>
     )
 }

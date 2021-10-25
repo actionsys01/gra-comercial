@@ -6,62 +6,53 @@ export const CompanyRegister = styled.div`
     align-items: center;
     box-sizing: border-box;
     margin-bottom: 8px;
+
    
-   div {
-    width: 500px;
-    height: 425px;
-    border: 1px solid rgba(151, 151, 151, .45);
+     form {
 
-    .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        border: none;
+        .container {
 
-        .label {
-            position: relative;
+            width: 500px;
+            height: 370px;
+            border: 1px solid rgba(151, 151, 151, .45);
             display: flex;
-            height: 20px;
-            border: none;
-         h6 {
-            position: absolute;
-            left: 75px;
-         }
-     }
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            gap: 15px;
+            margin-bottom: 1rem;
+        
+       
 
-     .input-style  {
-            vertical-align: middle;
-            height: 35px;
-            width: 75%;
-            border-radius: 5px;
-            border: 1px solid #eaeaea;
-            margin: 7px 10px;
+       div {
+           width: 100%;
+            display: flex;
+            flex-direction: column;
+            span {
+                margin: 0 0.5rem;
+                font-size: 0.8rem;
+        }
 
         input {
-            margin: 4px 10px;
-            padding:0;
-            box-shadow: none;
-            font-size: .875rem;
-            background-color: transparent;
-            border: none;
-            color: #1c496a;
-            outline:  none;
-            border-radius: 0;
+            max-width: 450px;
             width: 100%;
-        }
-   }
+            height: calc(1.688 * 16pt);
+            border: 1px solid #eaeaea;
+        }}
+    
+    }
+
    }
         select {
-            max-width: 100%;
+            max-width: 450px;
             display: inline-block;
             align-items: center;
             user-select: none;
             white-space: nowrap;
             position: relative;
             cursor: pointer;
-            max-width: 80vw; 
-            width: 75%;
+            width: 100%;
             overflow: hidden;
             transition: border 0.2s ease 0s,color 0.2s ease-out 0s; 
             border: 1px solid #eaeaea;
@@ -72,9 +63,7 @@ export const CompanyRegister = styled.div`
             background-color: #fff;
             justify-content: flex-end;
             flex-wrap: wrap;
-            margin:  7px 10px;
  
 } 
 
-   }
 `

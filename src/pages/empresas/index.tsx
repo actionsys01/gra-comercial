@@ -9,7 +9,8 @@ import * as companies from "@services/empresas"
 import Popover from '@components/Popover';
 import { useToasts } from "@geist-ui/react";
 import Pagination from "@material-ui/lab/Pagination";
-import { Pages } from "../../styles/pages"
+import { Pages } from "../../styles/pages";
+import {capitalize} from "@utils/sort"
 
 interface CompanyProps {
     id: number;
@@ -107,6 +108,7 @@ const getCompanyData = useCallback(async () => {
             company.forEach((item) => {
                 allData.push({
                     ...item,
+                    nome_fantasia: capitalize(item.nome_fantasia),
                     option:  <Popover content={[{optionName: "Editar", 
                     onClick: () => {const accountData = item.plano; 
                     edit(item, accountData)} }, {optionName: "Deletar", 
@@ -115,9 +117,18 @@ const getCompanyData = useCallback(async () => {
                 })
             })
         }
-        return allData;
+        return allData.sort(comparations);
     }, [company])
     
+     function comparations (a: any, b: any) {
+        if ( a.nome_fantasia < b.nome_fantasia ){
+            return -1;
+        }
+        if ( a.nome_fantasia > b.nome_fantasia ){
+            return 1;
+        }
+        return 0;
+        }
 
     return <>
         <Head>
