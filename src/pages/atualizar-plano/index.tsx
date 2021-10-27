@@ -6,7 +6,6 @@ import {InputContainer, BottomContainer, ButtonStyle, SmallInputs, Column} from 
 import { Checkbox } from '@material-ui/core';
 import { useToasts } from "@geist-ui/react";
 import * as accounts from "@services/planos";
-import { formatPrice } from "@utils/formatPrice"
 
 export default function AtualizarPlano() {
     const router = useRouter();
@@ -73,7 +72,7 @@ if(Array.isArray(appNumbers)) {
 
     async function updateAccount () {
         try {
-            await accounts.atualizar({id: Number(router.query.id),  nome: name, desconto: discount, usuarios: usersQuantity, notas: invoiceQuantity, valor: value, dias: duration, aplicacoes: applications })
+            await accounts.atualizar({id: Number(router.query.id),  nome: name, desconto: discount, usuarios: usersQuantity, notas: invoiceQuantity, valor: Number(value), dias: duration, aplicacoes: applications })
             setToast({
                 text: "Plano cadastrado com sucesso.",
                 type: "success"
@@ -124,7 +123,7 @@ if(Array.isArray(appNumbers)) {
                             </div>
                             <div>
                                 <span>Valor da Mensalidade</span>
-                                <input type="text"  value={value.toFixed(2)} onChange={(e) => setValue(Number(e.target.value))}/>
+                                <input type="number"   min="0.00" max="10000.00" step="0.01" value={(value).toFixed(2)} onChange={(e) => setValue(Number(e.target.value))}/>
                             </div>
                         </div>
                     </Column>

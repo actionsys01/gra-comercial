@@ -6,8 +6,6 @@ import {InputContainer, BottomContainer, ButtonStyle, SmallInputs, Column} from 
 import { Checkbox } from '@material-ui/core';
 import { useToasts } from "@geist-ui/react";
 import * as accounts from "@services/planos"
-import { formatPrice } from "@utils/formatPrice"
-import { ArrowUpLeft } from '@geist-ui/react-icons';
 
 export default function PlanoCadastro() {
     const router = useRouter();
@@ -16,8 +14,8 @@ export default function PlanoCadastro() {
     const [duration, setDuration] = useState<number>(0);
     const [invoiceQuantity, setInvoiceQuantity] = useState<number>(0);
     const [usersQuantity, setUsersQuantity] = useState<number>(0);
-    const [discount, setDiscount] = useState<number>(0);
-    const [value, setValue] = useState(0);
+    const [discount, setDiscount] = useState(0);
+    const [value, setValue] = useState();
     const [applications, setApplications] = useState<number[]>([])
     const [, setToast] = useToasts();
 
@@ -41,8 +39,8 @@ export default function PlanoCadastro() {
                     type: "warning"
                 });
                 return
-            }
-            await accounts.criar({nome: name, descricao: description, desconto: discount, usuarios: usersQuantity, notas: invoiceQuantity, valor: value, dias: duration, aplicacoes: applications })
+            }console.log(value)
+            await accounts.criar({nome: name, descricao: description, desconto: discount, usuarios: usersQuantity, notas: invoiceQuantity, valor: Number(value), dias: duration, aplicacoes: applications })
             setToast({
                 text: "Plano cadastrado com sucesso.",
                 type: "success"
@@ -56,11 +54,7 @@ export default function PlanoCadastro() {
         router.push("/planos")
     }
 
-    const priceFormatted = useMemo(() => {
-        if(value){
-        return value.toFixed(2)
-        }
-    },[value])
+    
 
     return (
         <>
@@ -100,7 +94,7 @@ export default function PlanoCadastro() {
                             </div>
                             <div>
                                 <span>Valor da Mensalidade</span>
-                                <input type="number"  onChange={(e) => setValue(Number(e.target.value))}/>
+                                <input type="number" min="0.00" max="10000.00" step="0.01" defaultValue="0.00" onChange={(e: any) => setValue(e.target.value)} />
                             </div>
                         </div>  
                     </Column>
