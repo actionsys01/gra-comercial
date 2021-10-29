@@ -50,7 +50,7 @@ export default function CadastrarEmpresa() {
                 });
                 return
             }
-            await companies.create({razao_social: socialName, nome_fantasia: company, cnpj: cnpj, email: email, status: 1, plano: Number(account)})
+            await companies.create({razao_social: socialName, nome_fantasia: company, cnpj: cnpj, email: email, status: 1, plano_id: Number(account)})
             setToast({
                 text: "Empresa cadastrada com sucesso.",
                 type: "success"
