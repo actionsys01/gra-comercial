@@ -34,7 +34,8 @@ export default function AtualizarEmpresa() {
 
     
 
-        async function updateCompany() {
+        async function updateCompany(e: any) {
+            e.preventDefault()
             try {
                 await companies.update({empresa_id: Number(router.query.id), razao_social: socialName, nome_fantasia: company, cnpj: cnpj, email: email, status: 1, plano_id: Number(account)})
                 setToast({
@@ -53,46 +54,48 @@ export default function AtualizarEmpresa() {
     return (
         <>
         <Head>
-            <title>Orion | Cadastrar Empresas</title>
+            <title>Orion | Atualizar Empresas</title>
         </Head>
         <BotaoVoltar />
-        <h2>Cadastrar Empresa</h2>
+        <h2>Atualizar Empresa</h2>
         <CompanyRegister>
-            <div>
-                <div className="container">
-                <div className="label"><h6>Empresa</h6></div>
-                    <div className="input-style">
-                        <input type="text" value={company} onChange={(e) => setCompany(e.target.value)}/>
-                    </div>
-                    <div className="label"><h6>Razão Social</h6></div>
-                    <div className="input-style">
-                        <input type="text" value={socialName} onChange={(e) => setSocialName(e.target.value)}/>
-                    </div>
-                    <div className="label"><h6>E-mail</h6></div>
-                    <div className="input-style">
-                        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
-                    </div>
-                    <div className="label"><h6>CNPJ</h6></div>
-                    <div className="input-style">
-                        <input type="text" value={cnpj} onChange={(e) => setCnpj(e.target.value)}/>
-                    </div>
-                    <div className="label"><h6>Plano</h6></div>
-                    <select defaultValue={router.query.accountName} onChange={(e: any) => setAccount(e.target.value)}>
+                <form onSubmit={updateCompany}>
+                    <div className="container">
+                        <div>
+                            <span >Empresa</span>
+                            <input type="text" value={company} onChange={(e) => setCompany(e.target.value)}/>
+                        </div>
+                        <div>
+                            <span>Razão Social</span>
+                            <input type="text" value={socialName} onChange={(e) => setSocialName(e.target.value)}/>
+                        </div>
+                        <div >
+                            <span>E-mail</span>
+                            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        </div>
+                        <div>
+                            <span>CNPJ</span>
+                            <input type="text" value={cnpj} onChange={(e) => setCnpj(e.target.value)}/>
+                        </div>
+                        <div>
+                        <span>Plano</span>
+                        <select onChange={(e: any) => setAccount(e.target.value)}>
                         <option value="" selected disabled>{router.query.accountName}</option>
-                        {accountData.map((item, i ) => (
-                            <option key={i} value={item.id}>
-                                {item.nome}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-        </CompanyRegister>
-        <BottomConfirmBtn>
-            <button onClick={updateCompany}>
-                Confirmar
-            </button>
-        </BottomConfirmBtn>
+                            {accountData.map((item, i ) => (
+                                <option key={i} value={item.id}>
+                                    {item.nome}
+                                </option>
+                            ))}
+                        </select>
+                        </div>
+                    </div>
+                    <BottomConfirmBtn>
+                    <button type="submit">
+                        Confirmar
+                    </button>
+                </BottomConfirmBtn>
+                </form>
+            </CompanyRegister>
     </>
     )
 }
