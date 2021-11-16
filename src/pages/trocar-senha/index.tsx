@@ -1,5 +1,4 @@
 import { Button, Input, Row, Spacer, Text, useToasts } from "@geist-ui/react";
-import * as usuarios from "@services/usuarios";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
