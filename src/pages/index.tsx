@@ -51,7 +51,7 @@ const Entrar = () => {
 
     setEmail("");
     setSenha("");
-    router.push("/dashboard");
+    router.push("/empresas");
   }
 
   return (
@@ -122,7 +122,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (session) {
     return {
       redirect: {
-        destination: `${process.env.APP_WEB_URL}/dashboard`,
+        destination: `${process.env.APP_WEB_URL}/empresas`,
         permanent: false,
       },
     };
