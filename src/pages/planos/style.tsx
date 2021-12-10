@@ -45,8 +45,8 @@ export const ButtonStyle = styled.div`
 
 export const AccountGrid = styled.div`
       margin: 0;
-    box-sizing: border-box;
-    overflow: visible;
+      box-sizing: border-box;
+      overflow: visible;
     
     
     table {
@@ -90,6 +90,13 @@ export const AccountGrid = styled.div`
         tr {
           td:first-child {
             padding-left: 10px;
+          }
+          td:nth-child(3) {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 305px;
+            padding-right: 20px;
+
           }
           td {
             border-bottom: 1px solid #eaeaea;
