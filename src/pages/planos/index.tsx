@@ -71,18 +71,23 @@ export default function Planos() {
         setVisibleModal(true)
         }
 
+        console.log(`accountId`, accountId)
+
         async function deleteAccount() {
-            await accounts.deletar(accountId);
-            const updatedAccount = accountData?.filter((item) => item.id !== accountId);
-            setAccountData(updatedAccount)
             try {
+                console.log("pt 1")
+                await accounts.deletar(accountId);
+                const updatedAccount = accountData?.filter((item) => item.id !== accountId);
+                setAccountData(updatedAccount)
                 setToast({
                     text: "O plano foi deletado com sucesso",
                     type: "success"
                 })
-            } catch (error) {
+            } catch (error: any) {
+                console.log(error.response.data)
+                const message = error.response.data.mensagem
                 setToast({
-                    text: "Houve um problema, por favor tente novamente",
+                    text: message,
                     type: "warning"
                 })
             }
