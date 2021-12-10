@@ -125,10 +125,10 @@ export default function Planos() {
                         {optionName: "Deletar", 
                         onClick: () => exclude(item.id)}
                     ]}/>,
-                    descricao: `Detalhes do ${item.nome}`
                 })
             })
         }
+        console.log(`allData`, allData)
         return allData.sort(comparations)
       }, [accountData])
 

@@ -9,7 +9,7 @@ export const PopStyle = styled.div`
     min-width: 85px;
     height: fit-content;
     bottom: -1.865rem;
-    left: 24.89825px;
+    left: 26.89825px;
     background-color: #fff;
     color: #1c496a;
     border-radius: 5px;
@@ -27,4 +27,34 @@ export const PopStyle = styled.div`
             line-height: 2rem;
         }
 }
+
+div:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 42%;
+        width: 14px;
+        height: 2px;
+        border: 11px solid transparent;
+        border-right-color: #fff;
+        border-left: 0;
+        margin-top: -6px;
+        margin-left: -11px;
+    }
+
+    /* .beforeLast-prop {
+            bottom: -1.565rem;
+    }
+
+    .beforeLast-prop:before {
+        margin-top: 17px;
+    }
+
+    .last-prop {
+            bottom: -.565rem;
+    }
+
+    .last-prop:before {
+        margin-top: 33px;
+    } */
 `

@@ -72,7 +72,7 @@ if(Array.isArray(appNumbers)) {
 
     async function updateAccount () {
         try {
-            await accounts.atualizar({id: Number(router.query.id),  nome: name, desconto: discount, usuarios: usersQuantity, notas: invoiceQuantity, valor: Number(value), dias: duration, aplicacoes: applications })
+            await accounts.atualizar({id: Number(router.query.id), descricao: description, nome: name, desconto: discount, usuarios: usersQuantity, notas: invoiceQuantity, valor: Number(value), dias: duration, aplicacoes: applications })
             setToast({
                 text: "Plano cadastrado com sucesso.",
                 type: "success"
@@ -85,6 +85,10 @@ if(Array.isArray(appNumbers)) {
         }
         router.push("/planos")
     }
+
+    useEffect(() => {
+        console.log(description)
+    },[description])
 
     return <>
             <Head>
