@@ -104,7 +104,8 @@ if(Array.isArray(appNumbers)) {
                     </div>
                 <div>
                     <span>Descrição</span>
-                    <input type="text" value={description} onChange={(e) => setDescription(e.target.value)}/>
+                    <textarea value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+                    {/* <input type="text" value={description} onChange={(e) => setDescription(e.target.value)}/> */}
                 </div>
                 <SmallInputs>
                     <Column>
