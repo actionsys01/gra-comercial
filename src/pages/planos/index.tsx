@@ -133,7 +133,7 @@ export default function Planos() {
                 })
             })
         }
-        console.log(`allData`, allData)
+        // console.log(`allData`, allData)
         return allData.sort(comparations)
       }, [accountData])
 
@@ -162,7 +162,7 @@ export default function Planos() {
                     <th>Nome</th>
                     <th>Descrição</th>
                     <th>Dias</th>
-                    <th>Armazenamento</th>
+                    {/* <th>Armazenamento</th> */}
                     <th>Notas p/ Mês</th>
                 </tr>
             </thead>
@@ -173,7 +173,7 @@ export default function Planos() {
                         <td>{item.nome}</td>
                         <td>{item.descricao}</td>
                         <td>{item.dias}</td>
-                        <td>15Gb</td>
+                        {/* <td>15Gb</td> */}
                         <td>{item.notas}</td>
                     </tr>
                 ))}
