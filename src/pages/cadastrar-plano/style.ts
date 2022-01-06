@@ -39,6 +39,7 @@ export const InputContainer = styled.div`
             height: 75px;
             border: 1px solid #eaeaea;
             padding-inline-start: .225rem;
+            resize: none;
         }
 
      
