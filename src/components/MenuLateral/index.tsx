@@ -63,13 +63,13 @@ export default function MenuLateral({
             <MenuItem icon={<img src="images/actionsys.jpg" style={{objectFit: "contain", borderRadius: "50%"}} />} >
               Actionsys
             </MenuItem>
-           
-            <SubMenu title="Configurações" icon={<Settings />}>
-               <MenuItem onClick={() => router.push("/empresas")}>
-                Cadastro de Empresa
-              </MenuItem>
-               <MenuItem onClick={() => router.push("/planos")}>
-                Cadastro de Plano
+          
+          <SubMenu title="Configurações" icon={<Settings />}>
+              <MenuItem onClick={() => router.push("/empresas")}>
+              Cadastro de Empresa
+            </MenuItem>
+              <MenuItem onClick={() => router.push("/planos")}>
+              Cadastro de Plano
               </MenuItem>
               </SubMenu>
           </Menu>
