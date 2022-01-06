@@ -25,20 +25,19 @@ export default function CadastrarEmpresa() {
     const [cnpj, setCnpj] = useState<string>("");   
     const [email, setEmail] = useState<string>("");
     const [socialName, setSocialName] = useState<string>("");
-    const [account, setAccount] = useState<number>(81);
+    const [account, setAccount] = useState(0);
     const [, setToast] = useToasts();
     const [ accountData, setAccountData] = useState<AccountProps[]>([])
 
     const getAccounts = useCallback(async () => {
         const response = await accounts.getAllAccounts();
         const data = response.data
-        return data
+        setAccountData(data)
     }, [])
 
     useEffect(() => {
-        getAccounts().then(response => setAccountData(response))
+        getAccounts()
     }, [])
-
 
     async function createCompany(e: any) {
         e.preventDefault()
@@ -55,7 +54,8 @@ export default function CadastrarEmpresa() {
                 text: "Empresa cadastrada com sucesso.",
                 type: "success"
             })
-        } catch (error) {
+        } catch (error: any) {
+            console.log(error.response.mensagem)
             setToast({
                 text: "Houve um problema, por favor tente novamente.",
                 type: "warning"
@@ -63,7 +63,7 @@ export default function CadastrarEmpresa() {
         }
         router.push({pathname: "/empresas"})
     }
-    
+
     return (
         <>
             <Head>
@@ -92,7 +92,8 @@ export default function CadastrarEmpresa() {
                         </div>
                         <div>
                         <span>Plano</span>
-                        <select onChange={(e: any) => setAccount(e.target.value)}>
+                        <select onChange={(e) => setAccount(Number(e.target.value))}>
+                            <option defaultValue="">Selecione</option>
                             {accountData.map((item, i ) => (
                                 <option key={i} value={item.id}>
                                     {item.nome}
