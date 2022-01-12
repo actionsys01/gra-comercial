@@ -22,9 +22,9 @@ background-color: #fff;
 
 h4 {
   font-size: 1.25rem; 
-  letter-spacing: 0.11rem;
-  font-weight: 600;
+  font-weight: 400;
   margin: 20px auto;
+  padding: 0 1rem;
   vertical-align: middle;
   text-align: center ;
   display: inline-block;
