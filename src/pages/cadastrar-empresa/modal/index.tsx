@@ -7,6 +7,7 @@ import BotaoVoltar from "@components/BotaoVoltar";
 import { Modal } from '@styles/modal';
 
 const ModalEmpresa = () => {
+    const router = useRouter();
 
     return <Modal>
         <div>
@@ -14,7 +15,8 @@ const ModalEmpresa = () => {
                 Cadastro concluído com sucesso! Dentro de instantes maiores instruções serão enviadas através do e-mail cadastrado.
             </h6>
             <div>
-                <button>
+                <button 
+                    onClick={() => router.push({pathname: "/empresas"})}>
                     OK
                 </button>
             </div>
