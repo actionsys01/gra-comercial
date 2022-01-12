@@ -7,8 +7,20 @@ import { Checkbox } from '@material-ui/core';
 import { useToasts } from "@geist-ui/react";
 import * as accounts from "@services/planos"
 
+const initialValues = {
+    name: "",
+    description: "",
+    duration: 0,
+    invoiceQuantity: 0,
+    usersQuantity: 0,
+    discount: 0,
+    value: "",
+    applications: []
+}
+
 export default function PlanoCadastro() {
     const router = useRouter();
+    const [ account, setAccount] = useState({...initialValues})
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [duration, setDuration] = useState<number>(0);
@@ -40,7 +52,14 @@ export default function PlanoCadastro() {
                 });
                 return
             }console.log(value)
-            await accounts.criar({nome: name, descricao: description, desconto: discount, usuarios: usersQuantity, notas: invoiceQuantity, valor: Number(value), dias: duration, aplicacoes: applications })
+            await accounts.criar({nome: name, 
+                                descricao: description, 
+                                desconto: discount, 
+                                usuarios: usersQuantity, 
+                                notas: invoiceQuantity, 
+                                valor: Number(value), 
+                                dias: duration, 
+                                aplicacoes: applications })
             setToast({
                 text: "Plano cadastrado com sucesso.",
                 type: "success"
@@ -71,7 +90,7 @@ export default function PlanoCadastro() {
                     </div>
                 <div>
                     <span>Descrição</span>
-                    <textarea onChange={(e) => setDescription(e.target.value)}></textarea>
+                    <textarea onChange={(e) => setDescription(e.target.value)} maxLength={1000}></textarea>
                 </div>
                 <SmallInputs>
                     <Column>

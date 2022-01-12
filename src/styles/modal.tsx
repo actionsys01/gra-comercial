@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Modal = styled.div`
-z-index: auto;
+z-index: 1000;
 display: block;
 position: fixed;
 top: 0;
@@ -28,6 +28,15 @@ h4 {
   vertical-align: middle;
   text-align: center ;
   display: inline-block;
+}
+
+h6 {
+  font-weight: 400;
+  margin: 20px auto;
+  vertical-align: middle;
+  text-align: center ;
+  display: inline-block;
+  padding: 0 1rem;
 }
 
 div {

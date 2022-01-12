@@ -27,7 +27,7 @@ export const InputContainer = styled.div`
         }
 
         input {
-            max-width: 450px;
+            max-width: 470px;
             width: 100%;
             height: 28px;
             border: 1px solid #eaeaea;
