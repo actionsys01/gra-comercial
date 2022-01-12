@@ -72,7 +72,15 @@ if(Array.isArray(appNumbers)) {
 
     async function updateAccount () {
         try {
-            await accounts.atualizar({id: Number(router.query.id), descricao: description, nome: name, desconto: discount, usuarios: usersQuantity, notas: invoiceQuantity, valor: Number(value), dias: duration, aplicacoes: applications })
+            await accounts.atualizar({id: Number(router.query.id), 
+                descricao: description, 
+                nome: name, 
+                desconto: discount, 
+                usuarios: usersQuantity, 
+                notas: invoiceQuantity, 
+                valor: Number(value), 
+                dias: duration, 
+                aplicacoes: applications })
             setToast({
                 text: "Plano cadastrado com sucesso.",
                 type: "success"
@@ -104,7 +112,7 @@ if(Array.isArray(appNumbers)) {
                     </div>
                 <div>
                     <span>Descrição</span>
-                    <textarea value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+                    <textarea value={description} onChange={(e) => setDescription(e.target.value)} maxLength={1000}></textarea>
                     {/* <input type="text" value={description} onChange={(e) => setDescription(e.target.value)}/> */}
                 </div>
                 <SmallInputs>

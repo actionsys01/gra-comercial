@@ -6,8 +6,8 @@ import {CompanyRegister} from "./style";
 import { BottomConfirmBtn } from 'src/styles/buttons'; 
 import * as companies from "@services/empresas"
 import * as accounts from "@services/planos"
-import { useToasts, Modal, useModal } from "@geist-ui/react";
-
+import { useToasts } from "@geist-ui/react";
+import ModalEmpresa from './modal';
 export interface AccountProps {
     id: number;
     nome: string;
@@ -28,6 +28,7 @@ export default function CadastrarEmpresa() {
     const [account, setAccount] = useState(0);
     const [, setToast] = useToasts();
     const [ accountData, setAccountData] = useState<AccountProps[]>([])
+    const [ visibleModal, setVisibleModal ] = useState(false)
 
     const getAccounts = useCallback(async () => {
         const response = await accounts.getAllAccounts();
@@ -49,7 +50,13 @@ export default function CadastrarEmpresa() {
                 });
                 return
             }
-            await companies.create({razao_social: socialName, nome_fantasia: company, cnpj: cnpj, email: email, status: 1, plano_id: Number(account)})
+            await companies.create({razao_social: socialName, 
+                nome_fantasia: company, 
+                cnpj: cnpj, 
+                email: email,
+                status: 1, 
+                plano_id: Number(account)})
+                setVisibleModal(true)
             setToast({
                 text: "Empresa cadastrada com sucesso.",
                 type: "success"
@@ -60,8 +67,9 @@ export default function CadastrarEmpresa() {
                 text: "Houve um problema, por favor tente novamente.",
                 type: "warning"
             })
-        }
         router.push({pathname: "/empresas"})
+        }
+        
     }
 
     return (
@@ -71,6 +79,7 @@ export default function CadastrarEmpresa() {
             </Head>
             <BotaoVoltar />
             <h2>Cadastrar Empresa</h2>
+            {visibleModal && <ModalEmpresa />}
             <CompanyRegister>
                 <form onSubmit={createCompany}>
                     <div className="container">

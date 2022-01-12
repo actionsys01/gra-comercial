@@ -27,7 +27,7 @@ export const InputContainer = styled.div`
         }
 
         input {
-            max-width: 450px;
+            max-width: 470px;
             width: 100%;
             height: 28px;
             border: 1px solid #eaeaea;
@@ -39,6 +39,7 @@ export const InputContainer = styled.div`
             height: 75px;
             border: 1px solid #eaeaea;
             padding-inline-start: .225rem;
+            resize: none;
         }
 
      
