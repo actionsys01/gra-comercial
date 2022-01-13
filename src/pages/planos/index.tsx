@@ -125,15 +125,16 @@ export default function Planos() {
                     nome: capitalize(item.nome),
                     option: <Popover content={[
                         {optionName: "Editar", 
-                        onClick: () => {const apps = item.aplicacoes;
-                        edit(item, apps)}},
+                        onClick: () => {
+                            const apps = item.aplicacoes;
+                            edit(item, apps)}},
                         {optionName: "Deletar", 
                         onClick: () => exclude(item.id)}
                     ]}/>,
                 })
             })
         }
-        // console.log(`allData`, allData)
+        console.log(`allData`, allData)
         return allData.sort(comparations)
       }, [accountData])
 

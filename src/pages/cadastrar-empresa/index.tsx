@@ -8,6 +8,7 @@ import * as companies from "@services/empresas"
 import * as accounts from "@services/planos"
 import { useToasts } from "@geist-ui/react";
 import ModalEmpresa from './modal';
+import MaskedCnpj from '@components/MaskedCnpj';
 export interface AccountProps {
     id: number;
     nome: string;
@@ -72,6 +73,10 @@ export default function CadastrarEmpresa() {
         
     }
 
+    useEffect(() => {
+       console.log(`cnpj`, cnpj)
+    }, [cnpj])
+
     return (
         <>
             <Head>
@@ -92,23 +97,23 @@ export default function CadastrarEmpresa() {
                             <input type="text" onChange={(e) => setSocialName(e.target.value)}/>
                         </div>
                         <div >
-                            <span>E-mail</span>
+                            <span>E-mail do responsável pela empresa</span>
                             <input type="email" onChange={(e) => setEmail(e.target.value)}/>
                         </div>
                         <div>
                             <span>CNPJ</span>
-                            <input type="text" onChange={(e) => setCnpj(e.target.value)}/>
+                            <MaskedCnpj value={cnpj} onChange={(event: any) => setCnpj(event.target.value)}/>
                         </div>
                         <div>
-                        <span>Plano</span>
-                        <select onChange={(e) => setAccount(Number(e.target.value))}>
-                            <option defaultValue="">Selecione</option>
-                            {accountData.map((item, i ) => (
-                                <option key={i} value={item.id}>
-                                    {item.nome}
-                                </option>
-                            ))}
-                        </select>
+                            <span>Plano</span>
+                            <select onChange={(e) => setAccount(Number(e.target.value))}>
+                                <option defaultValue="">Selecione</option>
+                                {accountData.map((item, i ) => (
+                                    <option key={i} value={item.id}>
+                                        {item.nome}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                     </div>
                     <BottomConfirmBtn>

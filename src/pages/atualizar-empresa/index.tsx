@@ -19,25 +19,28 @@ export default function AtualizarEmpresa() {
     const [ accountData, setAccountData] = useState<AccountProps[]>([])
     const [, setToast] = useToasts()
 
-    console.log("curry",router.query)
 
     
     const getAccounts = useCallback(async () => {
         const response = await accounts.getAllAccounts();
         const data = response.data
-        return data
+        setAccountData(data)
     }, [])
 
     useEffect(() => {
-        getAccounts().then(response => setAccountData(response))
+        getAccounts()
     }, [])
-
-    
 
         async function updateCompany(e: any) {
             e.preventDefault()
             try {
-                await companies.update({empresa_id: Number(router.query.id), razao_social: socialName, nome_fantasia: company, cnpj: cnpj, email: email, status: 1, plano_id: Number(account)})
+                await companies.update({empresa_id: Number(router.query.id), 
+                    razao_social: socialName, 
+                    nome_fantasia: company, 
+                    cnpj: cnpj, 
+                    email: email, 
+                    status: 1, 
+                    plano_id: Number(account)})
                 setToast({
                     text: "Dados atualizados com sucesso.",
                     type: "success"
@@ -70,7 +73,7 @@ export default function AtualizarEmpresa() {
                             <input type="text" value={socialName} onChange={(e) => setSocialName(e.target.value)}/>
                         </div>
                         <div >
-                            <span>E-mail</span>
+                            <span>E-mail do responsável pela empresa</span>
                             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                         </div>
                         <div>

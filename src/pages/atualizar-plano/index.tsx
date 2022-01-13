@@ -6,19 +6,21 @@ import {InputContainer, BottomContainer, ButtonStyle, SmallInputs, Column} from 
 import { Checkbox } from '@material-ui/core';
 import { useToasts } from "@geist-ui/react";
 import * as accounts from "@services/planos";
+import { initialValues } from '@utils/values';
 
 export default function AtualizarPlano() {
     const router = useRouter();
-    const [name, setName] = useState<string>(router.query.nome as string);
-    const [description, setDescription] = useState<string>(router.query.descricao as string);
-    const [duration, setDuration] = useState<number>(Number(router.query.dias));
-    const [invoiceQuantity, setInvoiceQuantity] = useState<number>(Number(router.query.notas));
-    const [usersQuantity, setUsersQuantity] = useState<number>(Number(router.query.usuarios))
-    const [discount, setDiscount] = useState<number>(0);
-    const [value, setValue] = useState<number>(Number(router.query.valor));
+    const [ account, setAccount] = useState({
+        name: router.query.nome as string,
+        description: router.query.descricao as string,
+        duration: Number(router.query.dias),
+        invoiceQuantity: Number(router.query.notas),
+        usersQuantity: Number(router.query.usuarios),
+        discount: 0,
+        value: Number(router.query.valor),
+    })
     const [applications, setApplications] = useState<number[]>([])
     const [, setToast] = useToasts();
-    const [appNames, setAppNames] = useState<string[]>([])
 
    
     
@@ -30,21 +32,21 @@ export default function AtualizarPlano() {
     
  
 
- 
-const appData = useMemo(() => {
-const numbData: any = []
-const appNumbers: any = router.query.appIds;
-if(Array.isArray(appNumbers)) {
-    const convertedNumbers = appNumbers.map((item: any) => Number(item))
-    setApplications(convertedNumbers)
-    return convertedNumbers
-} else {
-    numbData.push(router.query.appIds)
-    const convertedNumbers = numbData.map((item: any) => Number(item))
-    setApplications(convertedNumbers)
-    return convertedNumbers
-}
-}, [])
+    console.log(`router.query`, router.query)
+    const appData = useMemo(() => {
+    const numbData: any = []
+    const appNumbers: any = router.query.appIds;
+    if(Array.isArray(appNumbers)) {
+        const convertedNumbers = appNumbers.map((item: any) => Number(item))
+        setApplications(convertedNumbers)
+        return convertedNumbers
+    } else {
+        numbData.push(router.query.appIds)
+        const convertedNumbers = numbData.map((item: any) => Number(item))
+        setApplications(convertedNumbers)
+        return convertedNumbers
+    }
+    }, [])
 
    const check = () => {
     if (applications.includes(1)) {setNfe(true)} 
@@ -73,13 +75,13 @@ if(Array.isArray(appNumbers)) {
     async function updateAccount () {
         try {
             await accounts.atualizar({id: Number(router.query.id), 
-                descricao: description, 
-                nome: name, 
-                desconto: discount, 
-                usuarios: usersQuantity, 
-                notas: invoiceQuantity, 
-                valor: Number(value), 
-                dias: duration, 
+                descricao: account.description, 
+                nome: account.name, 
+                desconto: account.discount, 
+                usuarios: account.usersQuantity, 
+                notas: account.invoiceQuantity, 
+                valor: Number(account.value), 
+                dias: account.duration, 
                 aplicacoes: applications })
             setToast({
                 text: "Plano cadastrado com sucesso.",
@@ -94,37 +96,43 @@ if(Array.isArray(appNumbers)) {
         router.push("/planos")
     }
 
-    useEffect(() => {
-        console.log(description)
-    },[description])
+
 
     return <>
             <Head>
                 <title>Orion | Atualizar Plano</title>
             </Head>
             <BotaoVoltar />
-            <h2>Atualizar Planos</h2>
+            <h2>Atualizar Planos{applications}</h2>
             <InputContainer>
                 <div>
                     <div>
                         <span>Nome do Plano</span>
-                        <input type="text" value={name} onChange={(e) => setName(e.target.value)}/>
+                        <input type="text" 
+                            value={account.name} 
+                            onChange={(e) => setAccount({...account, name: e.target.value})}/>
                     </div>
                 <div>
                     <span>Descrição</span>
-                    <textarea value={description} onChange={(e) => setDescription(e.target.value)} maxLength={1000}></textarea>
-                    {/* <input type="text" value={description} onChange={(e) => setDescription(e.target.value)}/> */}
+                    <textarea 
+                        value={account.description} 
+                        onChange={(e) => setAccount({...account, description: e.target.value})} 
+                        maxLength={1000}></textarea>
                 </div>
                 <SmallInputs>
                     <Column>
                         <div>
                             <div>
                                 <span>Quantidade de Notas</span>
-                                <input type="text" value={invoiceQuantity} onChange={(e) => setInvoiceQuantity(Number(e.target.value))}/>
+                                <input type="text" 
+                                    value={account.invoiceQuantity} 
+                                    onChange={(e) => setAccount({...account, invoiceQuantity: Number(e.target.value)})}/>
                             </div>
                             <div>
                                 <span>Duração (em dias)</span>
-                                <input type="text" value={duration} onChange={(e) => setDuration(Number(e.target.value))}/>
+                                <input type="text" 
+                                value={account.duration} 
+                                onChange={(e) => setAccount({...account, duration : Number(e.target.value)})}/>
                             </div>
                         </div>
                     </Column>
@@ -132,11 +140,18 @@ if(Array.isArray(appNumbers)) {
                         <div>
                             <div>
                                 <span>Quantidade de Usuários</span>
-                                <input type="text"  value={usersQuantity} onChange={(e) => setUsersQuantity(Number(e.target.value))}/>
+                                <input type="text"  
+                                    value={account.usersQuantity} 
+                                    onChange={(e) => setAccount({...account, usersQuantity : Number(e.target.value)})}/>
                             </div>
                             <div>
                                 <span>Valor da Mensalidade</span>
-                                <input type="number"   min="0.00" max="10000.00" step="0.01" value={(value).toFixed(2)} onChange={(e) => setValue(Number(e.target.value))}/>
+                                <input type="number"  
+                                    min="0.00" 
+                                    max="10000.00" 
+                                    step="0.01" 
+                                    value={(account.value).toFixed(2)} 
+                                    onChange={(e) => setAccount({...account, value : Number( e.target.value)})}/>
                             </div>
                         </div>
                     </Column>
