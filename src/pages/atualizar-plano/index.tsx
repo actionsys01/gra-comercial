@@ -103,7 +103,7 @@ export default function AtualizarPlano() {
                 <title>Orion | Atualizar Plano</title>
             </Head>
             <BotaoVoltar />
-            <h2>Atualizar Planos{applications}</h2>
+            <h2>Atualizar Planos</h2>
             <InputContainer>
                 <div>
                     <div>
