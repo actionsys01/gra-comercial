@@ -26,15 +26,15 @@ export default function PlanoCadastro() {
         setApplications(state => state.filter(value => value !== e))
         }
 
-        useEffect(() => {
-           console.log(`applications`, applications)
-           console.log(`account.applications`, account)
-        }, [applications, account])
+        // useEffect(() => {
+        //    console.log(`applications`, applications)
+        //    console.log(`account.applications`, account)
+        // }, [applications, account])
 
 
     async function createAccount () {
         try {
-            if(!account || !applications){
+            if(!account.description || !account.duration || !account.invoiceQuantity || !account.usersQuantity || !applications){
                 setToast({
                     text: "Favor inserir dados válidos",
                     type: "warning"

@@ -32,7 +32,7 @@ export default function AtualizarPlano() {
     
  
 
-
+    console.log(`router.query`, router.query)
     const appData = useMemo(() => {
     const numbData: any = []
     const appNumbers: any = router.query.appIds;
@@ -103,7 +103,7 @@ export default function AtualizarPlano() {
                 <title>Orion | Atualizar Plano</title>
             </Head>
             <BotaoVoltar />
-            <h2>Atualizar Planos</h2>
+            <h2>Atualizar Planos{applications}</h2>
             <InputContainer>
                 <div>
                     <div>
