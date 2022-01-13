@@ -86,7 +86,7 @@ export default function PlanoCadastro() {
                 <div>
                     <div>
                         <span>Nome do Plano</span>
-                        <input type="tsext" onChange={(e) => setName(e.target.value)}/>
+                        <input type="text" onChange={(e) => setName(e.target.value)}/>
                     </div>
                 <div>
                     <span>Descrição</span>
