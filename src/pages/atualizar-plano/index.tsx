@@ -84,7 +84,7 @@ export default function AtualizarPlano() {
                 dias: account.duration, 
                 aplicacoes: applications })
             setToast({
-                text: "Plano cadastrado com sucesso.",
+                text: "Plano atualizado com sucesso.",
                 type: "success"
             })
         } catch (error) {

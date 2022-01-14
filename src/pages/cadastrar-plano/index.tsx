@@ -34,7 +34,7 @@ export default function PlanoCadastro() {
 
     async function createAccount () {
         try {
-            if(!account.description || !account.duration || !account.invoiceQuantity || !account.usersQuantity || !applications){
+            if(!account.description || !account.invoiceQuantity || !account.usersQuantity || !applications){
                 setToast({
                     text: "Favor inserir dados válidos",
                     type: "warning"
