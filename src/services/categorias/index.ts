@@ -3,11 +3,21 @@ import CreateCategory from './cadastro-categorias/CreateCategory';
 import UpdateCategory from './cadastro-categorias/UpdateCategory';
 import DeleteCategory from './cadastro-categorias/DeleteCategory';
 import GetCategoryByService from './cadastro-categorias/GetCategoryByService';
+import CreateConfig from './cadastro-config/CreateConfig';
+import ConfigPagination from './cadastro-config/ConfigPagination';
+import UpdateConfig from './cadastro-config/UpdateConfig';
+import DeleteConfig from './cadastro-config/DeleteConfig';
 
 export {
+  // categorias
   getCategoriesPagination,
   CreateCategory,
   DeleteCategory,
   GetCategoryByService,
   UpdateCategory,
+  // config
+  CreateConfig,
+  ConfigPagination,
+  DeleteConfig,
+  UpdateConfig
 };
