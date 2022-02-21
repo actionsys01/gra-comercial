@@ -110,7 +110,13 @@ export default function CategoriasAplicativos() {
           </span>
           Filtrar
         </button>
-        <button>
+        <button
+          onClick={() =>
+            router.push({
+              pathname: 'cadastro-categoria',
+            })
+          }
+        >
           <span>
             <Plus />
           </span>
