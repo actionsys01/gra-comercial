@@ -30,22 +30,20 @@ export default function ConfigCadastros() {
   const [quantityPage, setQuantityPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [visibleModal, setVisibleModal] = useState(false);
-  const cod = '';
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
-  console.log('router.query', router.query);
-
   const getConfigByCategoryCodePageData = useCallback(async () => {
     try {
       const response = await request.GetCategoryByService(
         String(router.query.cod),
+        page,
       );
       const data = response.data;
-      console.log('data', data.cadastro_config_id);
-      setData(data.cadastro_config_id);
+      setData(data.aplicacoes);
+      setQuantityPage(Math.ceil(data.aplicacoes.length / 8));
     } catch (error) {
       console.log(error);
       setToast({
@@ -91,7 +89,6 @@ export default function ConfigCadastros() {
 
   useEffect(() => {
     getConfigByCategoryCodePageData();
-    console.log('data', data);
   }, []);
 
   return (
