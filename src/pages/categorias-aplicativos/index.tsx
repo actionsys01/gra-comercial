@@ -119,7 +119,7 @@ export default function CategoriasAplicativos() {
         <button
           onClick={() =>
             router.push({
-              pathname: 'cadastro-categoria',
+              pathname: 'cadastrar-categoria',
             })
           }
         >
