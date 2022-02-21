@@ -11,7 +11,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import { TableGrid } from '@styles/tableStyle';
 import Popover from '@components/Popover';
 import Loader from '@components/Loader';
-import { AddBtn, BtnRow } from '@styles/buttons';
+import { BtnRow } from '@styles/buttons';
 
 interface IData {
   cod_categoria: string;
