@@ -73,7 +73,10 @@ export default function CategoriasAplicativos() {
                   onClick: () =>
                     router.push({
                       pathname: 'atualizar-categoria',
-                      query: { cod: item.cod_categoria },
+                      query: {
+                        cod: item.cod_categoria,
+                        desc: item.desc_categoria,
+                      },
                     }),
                   className: 'able',
                 },
