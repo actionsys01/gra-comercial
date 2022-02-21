@@ -27,7 +27,7 @@ export const Modal = styled.div`
       padding: 0 1rem;
       vertical-align: middle;
       text-align: center;
-      display: inline-block;
+      /* display: inline-block; */
     }
 
     h6 {
