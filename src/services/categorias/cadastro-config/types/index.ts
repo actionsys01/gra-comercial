@@ -69,3 +69,8 @@ export interface IUpdateCadastroConfigDTO {
   user_insert?: number;
   user_update?: number;
 }
+
+export interface IConfigData {
+  aplicacao: string;
+  desc_aplicacao: string;
+}
