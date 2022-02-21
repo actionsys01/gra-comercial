@@ -1,14 +1,14 @@
-import { useFiltro } from "@contexts/filtro";
-import {  useMediaQuery } from "@geist-ui/react";
+import { useFiltro } from '@contexts/filtro';
+import { useMediaQuery } from '@geist-ui/react';
 import {
   ChevronsLeft,
   ChevronsRight,
   LogOut,
   Settings,
   User,
-} from "@geist-ui/react-icons";
-import { signOut, useSession } from "next-auth/client";
-import { useRouter } from "next/router";
+} from '@geist-ui/react-icons';
+import { signOut, useSession } from 'next-auth/client';
+import { useRouter } from 'next/router';
 import {
   Menu,
   MenuItem,
@@ -16,7 +16,7 @@ import {
   SidebarContent,
   SidebarFooter,
   SubMenu,
-} from "react-pro-sidebar";
+} from 'react-pro-sidebar';
 
 interface IProps {
   setCollapsed(collapsed: boolean): void;
@@ -34,9 +34,8 @@ export default function MenuLateral({
   const [session] = useSession();
   const router = useRouter();
   const { limpar } = useFiltro();
-  
 
-  const isMD = useMediaQuery("lg");
+  const isMD = useMediaQuery('lg');
 
   async function sair() {
     await limpar();
@@ -48,7 +47,7 @@ export default function MenuLateral({
       <ProSidebar
         breakPoint="sm"
         collapsed={isMD ? collapsed : false}
-        width={"13.5rem"}
+        width={'13.5rem'}
         toggled={toggled}
         onToggle={() => setToggled(!toggled)}
       >
@@ -60,24 +59,34 @@ export default function MenuLateral({
                 onClick={() => setCollapsed(!collapsed)}
               />
             )}
-            <MenuItem icon={<img src="images/actionsys.jpg" style={{objectFit: "contain", borderRadius: "50%"}} />} >
+            <MenuItem
+              icon={
+                <img
+                  src="images/actionsys.jpg"
+                  style={{ objectFit: 'contain', borderRadius: '50%' }}
+                />
+              }
+            >
               Actionsys
             </MenuItem>
-          
-          <SubMenu title="Configurações" icon={<Settings />}>
-              <MenuItem onClick={() => router.push("/empresas")}>
-              Cadastro de Empresa
-            </MenuItem>
-              <MenuItem onClick={() => router.push("/planos")}>
-              Cadastro de Plano
+
+            <SubMenu title="Configurações" icon={<Settings />}>
+              <MenuItem onClick={() => router.push('/empresas')}>
+                Cadastro de Empresa
               </MenuItem>
-              </SubMenu>
+              <MenuItem onClick={() => router.push('/planos')}>
+                Cadastro de Plano
+              </MenuItem>
+              <MenuItem onClick={() => router.push('/categorias-aplicativos')}>
+                Categorias
+              </MenuItem>
+            </SubMenu>
           </Menu>
         </SidebarContent>
         <SidebarFooter>
           <Menu iconShape="circle">
             <SubMenu title={session?.usuario?.nome} icon={<User />}>
-              <MenuItem onClick={() => router.push("/trocar-senha")}>
+              <MenuItem onClick={() => router.push('/trocar-senha')}>
                 Trocar senha
               </MenuItem>
             </SubMenu>
