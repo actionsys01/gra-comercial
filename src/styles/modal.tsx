@@ -19,7 +19,8 @@ export const Modal = styled.div`
     top: 30%;
     background-color: #fff;
 
-    h4 {
+    h4,
+    h5 {
       font-size: 1.25rem;
       font-weight: 400;
       margin: 20px auto;
