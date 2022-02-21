@@ -77,7 +77,7 @@ export default function MenuLateral({
               <MenuItem onClick={() => router.push('/planos')}>
                 Cadastro de Plano
               </MenuItem>
-              <MenuItem onClick={() => router.push('/categorias-aplicativos')}>
+              <MenuItem onClick={() => router.push('/categorias-cadastros')}>
                 Categorias
               </MenuItem>
             </SubMenu>
