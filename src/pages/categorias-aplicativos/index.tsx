@@ -70,7 +70,11 @@ export default function CategoriasAplicativos() {
                 },
                 {
                   optionName: 'Editar',
-                  onClick: () => console.log('editar'),
+                  onClick: () =>
+                    router.push({
+                      pathname: 'atualizar-categoria',
+                      query: { cod: item.cod_categoria },
+                    }),
                   className: 'able',
                 },
                 {
