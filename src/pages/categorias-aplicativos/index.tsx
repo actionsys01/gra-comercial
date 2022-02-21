@@ -40,6 +40,7 @@ export default function CategoriasAplicativos() {
       // console.log('data', data.categorias);
       setLoading(false);
       setData(data.categorias);
+      setQuantityPage(Math.ceil(data.total / 8));
     } catch (error) {
       console.log(error);
       setToast({

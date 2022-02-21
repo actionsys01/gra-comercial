@@ -1,31 +1,27 @@
-import { Container, Main } from "@components/App/index";
-import MenuLateral from "@components/MenuLateral";
-import PaginaCarregamento from "@components/PaginaCarregamento";
-import FiltroProvider from "@contexts/filtro";
+import { Container, Main } from '@components/App/index';
+import MenuLateral from '@components/MenuLateral';
+import PaginaCarregamento from '@components/PaginaCarregamento';
+import FiltroProvider from '@contexts/filtro';
 import {
   CssBaseline,
   GeistProvider,
   Themes,
   useMediaQuery,
-} from "@geist-ui/react";
-import { AlignCenter } from "@geist-ui/react-icons";
-import { ReactNode } from "hoist-non-react-statics/node_modules/@types/react";
-import "inter-ui/inter.css";
-import { Provider, signIn, signOut, useSession  } from "next-auth/client";
-import { Session } from "next-auth";
-import { AppProps } from "next/app";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { ThemeProvider } from "styled-components";
-import "../styles/menu-lateral.css";
+} from '@geist-ui/react';
+import { AlignCenter } from '@geist-ui/react-icons';
+import 'inter-ui/inter.css';
+import { Provider, useSession } from 'next-auth/client';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { ThemeProvider } from 'styled-components';
+import '../styles/menu-lateral.css';
 
-
-interface IProps{
-  children : JSX.Element;
+interface IProps {
+  children: JSX.Element;
 }
 
-const Auth = ( { children } : IProps)   => {
+const Auth = ({ children }: IProps) => {
   const [session, loading] = useSession();
   const router = useRouter();
   const isUser = !!session?.user;
@@ -36,29 +32,26 @@ const Auth = ( { children } : IProps)   => {
   }, [isUser, loading]);
 
   if (isUser) {
-    return children
+    return children;
   }
 
   // Session is being fetched, or no user.
   // If no user, useEffect() will redirect.
   return <PaginaCarregamento />;
-}
-
-
-
+};
 
 export default function App({ Component, pageProps }: any) {
   const [collapsed, setCollapsed] = useState(false);
-  const isXS = useMediaQuery("xs");
+  const isXS = useMediaQuery('xs');
   const [toggle, setToggle] = useState(false);
 
   const orionTheme = Themes.createFromLight({
-    type: "orion",
+    type: 'orion',
     palette: {
-      foreground: "#1C496A",
-      accents_5: "#1C496A",
-      secondary: "#1C496A",
-      success: "#0DD0B3",
+      foreground: '#1C496A',
+      accents_5: '#1C496A',
+      secondary: '#1C496A',
+      success: '#0DD0B3',
     },
   });
 
@@ -90,15 +83,12 @@ export default function App({ Component, pageProps }: any) {
                   </Main>
                 </Container>
               </Auth>
-            )  : (
-               <Component {...pageProps} />
-           )}
+            ) : (
+              <Component {...pageProps} />
+            )}
           </ThemeProvider>
         </FiltroProvider>
       </GeistProvider>
     </Provider>
   );
 }
-
-
-

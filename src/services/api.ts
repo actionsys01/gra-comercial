@@ -1,7 +1,7 @@
-import axios from "axios";
-import { getSession, signOut } from "next-auth/client";
-import { fromUnixTime, isBefore } from "date-fns";
-import jwtDecode from "jwt-decode";
+import axios from 'axios';
+import { getSession, signOut } from 'next-auth/client';
+import { fromUnixTime, isBefore } from 'date-fns';
+import jwtDecode from 'jwt-decode';
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_APP_BACKEND_URL,
@@ -11,7 +11,7 @@ interface IJwtDecode {
   exp: string;
 }
 
-api.interceptors.request.use(async (config) => {
+api.interceptors.request.use(async config => {
   const session = await getSession();
 
   if (session) {
