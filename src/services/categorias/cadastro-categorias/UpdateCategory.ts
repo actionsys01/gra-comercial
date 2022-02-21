@@ -2,7 +2,7 @@ import api from '@services/api';
 
 interface IUpdateCategoriaDTO {
   cod_categoria: string;
-  id_empresa: number | any;
+  id_empresa: number;
   desc_categoria: string;
   user_update: number;
 }
