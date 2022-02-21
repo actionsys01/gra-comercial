@@ -105,7 +105,13 @@ export default function ConfigCadastros() {
           </span>
           Filtrar
         </button>
-        <button>
+        <button
+          onClick={() =>
+            router.push({
+              pathname: 'cadastrar-aplicativo',
+            })
+          }
+        >
           <span>
             <Plus />
           </span>
