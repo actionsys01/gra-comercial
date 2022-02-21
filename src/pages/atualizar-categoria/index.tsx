@@ -38,7 +38,7 @@ export default function CadastroCategoria() {
         text: 'Categoria cadastradacom sucesso',
         type: 'success',
       });
-      router.push('categorias-aplicativos');
+      router.push('categorias-cadastros');
     } catch (error) {
       console.log(error);
       setToast({
