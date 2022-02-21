@@ -12,8 +12,9 @@ import { TableGrid } from '@styles/tableStyle';
 import Popover from '@components/Popover';
 import Loader from '@components/Loader';
 import { BtnRow } from '@styles/buttons';
+import CategoryModal from './modal';
 
-interface IData {
+export interface IData {
   cod_categoria: string;
   desc_categoria: string;
   option: JSX.Element;
@@ -28,6 +29,8 @@ export default function CategoriasAplicativos() {
   const [page, setPage] = useState(1);
   const [quantityPage, setQuantityPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [visibleModal, setVisibleModal] = useState(false);
+  const [category, setCategory] = useState('');
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -72,7 +75,9 @@ export default function CategoriasAplicativos() {
                 },
                 {
                   optionName: 'Excluir',
-                  onClick: () => console.log('excluir'),
+                  onClick: () => {
+                    setVisibleModal(true), setCategory(item.cod_categoria);
+                  },
                   className: 'able',
                 },
               ]}
@@ -145,6 +150,14 @@ export default function CategoriasAplicativos() {
         </table>
       </TableGrid>
 
+      {visibleModal && (
+        <CategoryModal
+          setVisibleModal={setVisibleModal}
+          category={category}
+          data={data}
+          setData={setData}
+        />
+      )}
       <Pages>
         <Pagination
           onChange={handleChange}
