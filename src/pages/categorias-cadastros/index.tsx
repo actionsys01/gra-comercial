@@ -65,7 +65,11 @@ export default function CategoriasAplicativos() {
               content={[
                 {
                   optionName: 'Selecionar',
-                  onClick: () => console.log('selecionar'),
+                  onClick: () =>
+                    router.push({
+                      pathname: 'config-cadastros',
+                      query: { cod: item.cod_categoria },
+                    }),
                   className: 'able',
                 },
                 {
