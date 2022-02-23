@@ -12,6 +12,8 @@ export default function CadastrarAplicativo() {
   const [session] = useSession();
   const router = useRouter();
 
+  console.log('router.query', router.query);
+
   return (
     <>
       <Head>
@@ -79,7 +81,7 @@ export default function CadastrarAplicativo() {
             </InputStyles>
           </div>
           <div>
-             <InputStyles>
+            <InputStyles>
               <label htmlFor="descricao">Título Dado Num. 1</label>
               <input type="text" id="descricao" className="chave" />
               <label htmlFor="descricao">Título Dado Num. 2</label>
