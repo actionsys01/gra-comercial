@@ -59,13 +59,18 @@ export default function ConfigCadastros() {
       data.forEach((item, i) => {
         allData.push({
           ...item,
+
           option: (
             <Popover
               num={i}
               content={[
                 {
                   optionName: 'Selecionar',
-                  onClick: () => console.log('Selecionar'),
+                  onClick: () =>
+                    router.push({
+                      pathname: 'dados-cadastros',
+                      query: { app: item.aplicacao, id: item.id },
+                    }),
                   className: 'able',
                 },
                 {
@@ -109,6 +114,7 @@ export default function ConfigCadastros() {
           onClick={() =>
             router.push({
               pathname: 'cadastrar-aplicativo',
+              query: { cod: data.map(item => item.aplicacao) },
             })
           }
         >
