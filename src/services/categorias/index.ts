@@ -7,6 +7,7 @@ import CreateConfig from './cadastro-config/CreateConfig';
 import ConfigPagination from './cadastro-config/ConfigPagination';
 import UpdateConfig from './cadastro-config/UpdateConfig';
 import DeleteConfig from './cadastro-config/DeleteConfig';
+import GetConfigById from './cadastro-config/GetConfigById';
 
 export {
   // categorias
@@ -19,5 +20,6 @@ export {
   CreateConfig,
   ConfigPagination,
   DeleteConfig,
-  UpdateConfig
+  UpdateConfig,
+  GetConfigById,
 };
