@@ -39,11 +39,10 @@ export default function ConfigCadastros() {
     try {
       const response = await request.GetCategoryByService(
         String(router.query.cod),
-        page,
       );
       const data = response.data;
-      setData(data.aplicacoes);
-      setQuantityPage(Math.ceil(data.aplicacoes.length / 8));
+      setData(data);
+      // setQuantityPage(Math.ceil(data.aplicacoes.length / 8));
     } catch (error) {
       console.log(error);
       setToast({
