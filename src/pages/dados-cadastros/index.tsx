@@ -46,6 +46,10 @@ export default function DadosCadastros() {
       const data = response.data;
       setColumnData([data]);
       setAppData(data.cadastro_dados_id);
+      data.chave_8 && setDates({ ...dates, chave_8: true });
+      data.valor_date_1 && setDates({ ...dates, valor_date_1: true });
+      data.valor_date_2 && setDates({ ...dates, valor_date_2: true });
+      data.valor_date_3 && setDates({ ...dates, valor_date_3: true });
     } catch (error) {
       console.log(error);
     }
@@ -54,8 +58,6 @@ export default function DadosCadastros() {
   useEffect(() => {
     getDadosCadastrosPages();
   }, []);
-
-
 
   return (
     <>
