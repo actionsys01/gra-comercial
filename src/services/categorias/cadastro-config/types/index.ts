@@ -1,3 +1,4 @@
+import { IDados } from '@services/categorias/cadastro-dados/types';
 export interface ICreateCadastroConfigDTO {
   id: number;
   id_empresa: number;
@@ -104,5 +105,5 @@ export interface IConfigData {
   valor_date_3?: string;
   user_insert?: number;
   user_update?: number;
-  cadastro_dados_id: any
+  cadastro_dados_id: IDados;
 }
