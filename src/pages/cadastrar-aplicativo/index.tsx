@@ -12,7 +12,7 @@ export default function CadastrarAplicativo() {
   const [session] = useSession();
   const router = useRouter();
 
-  console.log('router.query', router.query);
+  // console.log('router.query', router.query);
 
   return (
     <>
