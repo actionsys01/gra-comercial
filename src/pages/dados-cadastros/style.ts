@@ -13,7 +13,19 @@ export const CollumHide = styled.tr`
   }
 
   > th {
-    min-width: 25px !important;
+    min-width: 18px !important;
     padding: 0 5px !important;
+  }
+
+  td {
+    min-width: 10px !important;
+    padding: 0 5px !important;
+    width: fit-content;
+    margin: 0;
+  }
+
+  input {
+    border: none;
+    text-align: center;
   }
 `;
