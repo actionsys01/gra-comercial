@@ -13,6 +13,7 @@ export const RowStyle = styled.div`
 export const InputStyles = styled.div`
   margin-top: 10px;
   label {
+    margin-top: 8px;
     padding: 0 0.5rem;
     font-weight: bold;
   }
@@ -73,11 +74,20 @@ export const InputBoxStyle = styled.div`
   justify-content: space-between;
   width: 100%;
   gap: 12px;
-  margin-top: 25px;
+  /* margin-top: 25px; */
 
   > div {
     border: 1px solid #eaeaea;
     width: 365px;
     padding: 8px;
   }
+`;
+
+export const BoxTitles = styled.div`
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  gap: 12px;
+  margin-top: 25px;
+  color: #808080;
 `;
