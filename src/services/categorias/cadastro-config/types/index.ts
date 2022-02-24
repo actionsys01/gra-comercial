@@ -1,6 +1,5 @@
 import { IDados } from '@services/categorias/cadastro-dados/types';
 export interface ICreateCadastroConfigDTO {
-  id: number;
   id_empresa: number;
   cod_categoria: string;
   aplicacao: string;
