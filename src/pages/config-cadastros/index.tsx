@@ -13,6 +13,7 @@ import { BtnRow } from '@styles/buttons';
 import * as request from '@services/categorias';
 import { IConfigData } from '@services/categorias/cadastro-config/types';
 import BotaoVoltar from '@components/BotaoVoltar';
+import paginate from '@utils/paginate';
 
 export interface IData {
   aplicacao: string;
@@ -26,13 +27,14 @@ export default function ConfigCadastros() {
   const router = useRouter();
 
   const [data, setData] = useState<IConfigData[]>([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [quantityPage, setQuantityPage] = useState(1);
+  const categoria = router.query.cod;
   const [loading, setLoading] = useState(true);
   const [visibleModal, setVisibleModal] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
+    setPage(value - 1);
   };
 
   const getConfigByCategoryCodePageData = useCallback(async () => {
@@ -40,9 +42,9 @@ export default function ConfigCadastros() {
       const response = await request.GetCategoryByService(
         String(router.query.cod),
       );
-      const data = response.data;
-      setData(data);
-      // setQuantityPage(Math.ceil(data.aplicacoes.length / 8));
+      const data = paginate(response.data);
+      setData(data[page]);
+      setQuantityPage(Math.ceil(data.length));
     } catch (error) {
       console.log(error);
       setToast({
@@ -50,7 +52,7 @@ export default function ConfigCadastros() {
         type: 'warning',
       });
     }
-  }, []);
+  }, [page]);
 
   const gatheredData = useMemo(() => {
     const allData: IData[] = [];
@@ -58,7 +60,6 @@ export default function ConfigCadastros() {
       data.forEach((item, i) => {
         allData.push({
           ...item,
-
           option: (
             <Popover
               num={i}
@@ -68,7 +69,12 @@ export default function ConfigCadastros() {
                   onClick: () =>
                     router.push({
                       pathname: 'dados-cadastros',
-                      query: { app: item.aplicacao, id: item.id },
+                      query: {
+                        app: item.aplicacao,
+                        id: item.id,
+                        desc: item.desc_aplicacao,
+                        cod: categoria,
+                      },
                     }),
                   className: 'able',
                 },
@@ -93,7 +99,7 @@ export default function ConfigCadastros() {
 
   useEffect(() => {
     getConfigByCategoryCodePageData();
-  }, []);
+  }, [page]);
 
   return (
     <>
@@ -113,7 +119,7 @@ export default function ConfigCadastros() {
           onClick={() =>
             router.push({
               pathname: 'cadastrar-aplicativo',
-              query: { cod: data.map(item => item.aplicacao) },
+              query: { cod: categoria },
             })
           }
         >
