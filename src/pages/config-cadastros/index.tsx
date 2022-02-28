@@ -14,6 +14,7 @@ import * as request from '@services/categorias';
 import { IConfigData } from '@services/categorias/cadastro-config/types';
 import BotaoVoltar from '@components/BotaoVoltar';
 import paginate from '@utils/paginate';
+import DeleteModal from './modal';
 
 export interface IData {
   aplicacao: string;
@@ -27,10 +28,11 @@ export default function ConfigCadastros() {
   const router = useRouter();
 
   const [data, setData] = useState<IConfigData[]>([]);
+  const [appId, setAppId] = useState(0);
   const [page, setPage] = useState(0);
   const [quantityPage, setQuantityPage] = useState(1);
   const categoria = router.query.cod;
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [visibleModal, setVisibleModal] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -80,12 +82,23 @@ export default function ConfigCadastros() {
                 },
                 {
                   optionName: 'Editar',
-                  onClick: () => console.log('Editar'),
+                  onClick: () =>
+                    router.push({
+                      pathname: 'atualizar-aplicativo',
+                      query: {
+                        app: item.aplicacao,
+                        id: item.id,
+                        desc: item.desc_aplicacao,
+                        cod: categoria,
+                      },
+                    }),
                   className: 'able',
                 },
                 {
                   optionName: 'Excluir',
-                  onClick: () => console.log('Excluir'),
+                  onClick: () => {
+                    setVisibleModal(true), setAppId(item.id);
+                  },
                   className: 'able',
                 },
               ]}
@@ -149,7 +162,14 @@ export default function ConfigCadastros() {
           </tbody>
         </table>
       </TableGrid>
-
+      {visibleModal && (
+        <DeleteModal
+          setVisibleModal={setVisibleModal}
+          data={data}
+          setData={setData}
+          id={appId}
+        />
+      )}
       <Pages>
         <Pagination
           onChange={handleChange}
