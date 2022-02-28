@@ -19,6 +19,8 @@ export default function CadastrarAplicativo() {
     desc_aplicacao: '',
   });
 
+  // console.log('router.query', router.query)
+
   const [register, setRegister] = useState({});
 
   function inputHandler(evt: any) {
