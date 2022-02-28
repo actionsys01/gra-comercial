@@ -104,7 +104,7 @@ export default function DadosCadastros() {
         });
       });
     }
-    console.log('allData', allData);
+    // console.log('allData', allData);
     return allData;
   }, [appData]);
 
@@ -114,9 +114,9 @@ export default function DadosCadastros() {
     setAppData(newAppData);
   }
 
-  useEffect(() => {
-    console.log('appdata', appData);
-  }, [appData]);
+  // useEffect(() => {
+  //   console.log('appdata', appData);
+  // }, [appData]);
 
   return (
     <>
