@@ -9,6 +9,7 @@ import UpdateConfig from './cadastro-config/UpdateConfig';
 import DeleteConfig from './cadastro-config/DeleteConfig';
 import GetConfigById from './cadastro-config/GetConfigById';
 import CreateDado from './cadastro-dados/CreateDado';
+import DeleteDado from './cadastro-dados/DeleteDado';
 
 export {
   // categorias
@@ -25,4 +26,5 @@ export {
   GetConfigById,
   //DADOS
   CreateDado,
+  DeleteDado,
 };
