@@ -24,7 +24,6 @@ export interface IData {
 
 export default function ConfigCadastros() {
   const [, setToast] = useToasts();
-  const [session] = useSession();
   const router = useRouter();
 
   const [data, setData] = useState<IConfigData[]>([]);
@@ -32,7 +31,7 @@ export default function ConfigCadastros() {
   const [page, setPage] = useState(0);
   const [quantityPage, setQuantityPage] = useState(1);
   const categoria = router.query.cod;
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [visibleModal, setVisibleModal] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -47,6 +46,7 @@ export default function ConfigCadastros() {
       const data = paginate(response.data);
       setData(data[page]);
       setQuantityPage(Math.ceil(data.length));
+      setLoading(false);
     } catch (error) {
       console.log(error);
       setToast({
@@ -113,6 +113,10 @@ export default function ConfigCadastros() {
   useEffect(() => {
     getConfigByCategoryCodePageData();
   }, [page]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <>
