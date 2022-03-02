@@ -9,20 +9,19 @@ import { useRouter } from 'next/router';
 import { TableGrid } from '@styles/tableStyle';
 import Popover from '@components/Popover';
 import Loader from '@components/Loader';
+import paginate from '@utils/paginate';
 import { BtnRow } from '@styles/buttons';
 import BotaoVoltar from '@components/BotaoVoltar';
 import * as request from '@services/categorias/';
 import { IConfigData } from '@services/categorias/cadastro-config/types';
 import { CollumHide } from './style';
-import { IDados } from '@services/categorias/cadastro-dados/types';
+import {
+  IDados,
+  IGatheredDados,
+} from '@services/categorias/cadastro-dados/types';
 import { appInitialValue } from '@utils/initial-values';
 import { format } from 'date-fns';
-
-export interface IData {
-  aplicacao: string;
-  desc_aplicacao: string;
-  option: JSX.Element;
-}
+import DeleteModal from './modal';
 
 const initialValues = {
   chave_8: false,
@@ -35,10 +34,13 @@ export default function DadosCadastros() {
   const [, setToast] = useToasts();
   const [session] = useSession();
   const router = useRouter();
-
-  const [columnData, setColumnData] = useState<IConfigData[]>([]);
+  const [page, setPage] = useState(0);
+  const [quantityPage, setQuantityPage] = useState(1);
+  const [visibleModal, setVisibleModal] = useState(false);
+  const [columnData, setColumnData] = useState({} as IConfigData);
   const [appData, setAppData] = useState<IDados[]>([]);
   const [dates, setDates] = useState({ ...initialValues });
+  const [dataId, setDataId] = useState(0);
   const [mainData, setMainData] = useState({
     id_empresa: Number(session?.usuario.empresa.id),
     cod_categoria: router?.query?.cod,
@@ -50,8 +52,10 @@ export default function DadosCadastros() {
     try {
       const response = await request.GetConfigById(Number(router.query.id));
       const data = response.data;
-      setColumnData([data]);
-      setAppData(data.cadastro_dados_id);
+      const pageData = paginate(response.data.cadastro_dados_id);
+      setColumnData(data);
+      setAppData(pageData[page]);
+      setQuantityPage(Math.ceil(pageData.length));
       data.chave_8 && setDates({ ...dates, chave_8: true });
       data.valor_date_1 && setDates({ ...dates, valor_date_1: true });
       data.valor_date_2 && setDates({ ...dates, valor_date_2: true });
@@ -63,24 +67,27 @@ export default function DadosCadastros() {
         type: 'warning',
       });
     }
-  }, []);
+  }, [page]);
+
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value - 1);
+  };
 
   useEffect(() => {
     getDadosCadastrosPages();
-  }, []);
+  }, [page]);
 
   async function saveChanges() {
     try {
       await appData.forEach(async data => {
-        await request
-          .CreateDado({
-            id_empresa: mainData.id_empresa,
-            // cod_categoria: String(mainData.cod_categoria),
-            aplicacao: Number(mainData.aplicacao),
-            // desc_aplicacao: String(mainData.desc_aplicacao),
-            ...data,
-          })
-          .then(() => console.log('Update concluído!'));
+        await request.CreateDado({
+          id_empresa: mainData.id_empresa,
+          // cod_categoria: String(mainData.cod_categoria),
+          aplicacao: Number(mainData.aplicacao),
+          // desc_aplicacao: String(mainData.desc_aplicacao),
+          ...data,
+        });
+        // .then(() => console.log('Update concluído!'));
       });
       setToast({
         text: 'Cadastro concluído',
@@ -96,11 +103,26 @@ export default function DadosCadastros() {
   }
 
   const gatheredData = useMemo(() => {
-    const allData: any = [];
+    const allData: any[] = [];
     if (appData) {
       appData.forEach((item, i) => {
         allData.push({
           ...item,
+          option: (
+            <Popover
+              num={i}
+              quant={1}
+              content={[
+                {
+                  optionName: 'Excluir',
+                  onClick: () => {
+                    setVisibleModal(true), setDataId(item.id);
+                  },
+                  className: 'able',
+                },
+              ]}
+            />
+          ),
         });
       });
     }
@@ -114,9 +136,11 @@ export default function DadosCadastros() {
     setAppData(newAppData);
   }
 
-  // useEffect(() => {
-  //   console.log('appdata', appData);
-  // }, [appData]);
+  useEffect(() => {
+    if (page > quantityPage) {
+      setPage(0);
+    }
+  }, [page, quantityPage]);
 
   return (
     <>
@@ -134,99 +158,107 @@ export default function DadosCadastros() {
         </button>
         <button onClick={() => saveChanges()}>Salvar</button>
       </BtnRow>
+      {visibleModal && (
+        <DeleteModal
+          setVisibleModal={setVisibleModal}
+          appData={appData}
+          setAppData={setAppData}
+          id={dataId}
+        />
+      )}
       <TableGrid>
         <table>
           <thead>
-            {columnData.map((item, i) => (
-              <CollumHide key={i}>
-                <th className="first"></th>
-                <th className={!item.chave_1 ? 'hideSeek' : ''}>
-                  {item.chave_1}
-                </th>
-                <th className={!item.chave_2 ? 'hideSeek' : ''}>
-                  {item.chave_2}
-                </th>
-                <th className={!item.chave_3 ? 'hideSeek' : ''}>
-                  {item.chave_3}
-                </th>
-                <th className={!item.chave_4 ? 'hideSeek' : ''}>
-                  {item.chave_4}
-                </th>
-                <th className={!item.chave_5 ? 'hideSeek' : ''}>
-                  {item.chave_5}
-                </th>
-                <th className={!item.chave_6 ? 'hideSeek' : ''}>
-                  {item.chave_6}
-                </th>
-                <th className={!item.chave_7 ? 'hideSeek' : ''}>
-                  {item.chave_7}
-                </th>
-                <th className={!item.chave_8 ? 'hideSeek' : ''}>
-                  {item.chave_8}
-                </th>
-                <th className={!item.valor_string_1 ? 'hideSeek' : ''}>
-                  {item.valor_string_1}
-                </th>
-                <th className={!item.valor_string_2 ? 'hideSeek' : ''}>
-                  {item.valor_string_2}
-                </th>
-                <th className={!item.valor_string_3 ? 'hideSeek' : ''}>
-                  {item.valor_string_3}
-                </th>
-                <th className={!item.valor_string_4 ? 'hideSeek' : ''}>
-                  {item.valor_string_4}
-                </th>
-                <th className={!item.valor_string_5 ? 'hideSeek' : ''}>
-                  {item.valor_string_5}
-                </th>
-                <th className={!item.valor_string_6 ? 'hideSeek' : ''}>
-                  {item.valor_string_6}
-                </th>
-                <th className={!item.valor_string_7 ? 'hideSeek' : ''}>
-                  {item.valor_string_7}
-                </th>
-                <th className={!item.valor_string_8 ? 'hideSeek' : ''}>
-                  {item.valor_string_8}
-                </th>
-                <th className={!item.valor_string_9 ? 'hideSeek' : ''}>
-                  {item.valor_string_9}
-                </th>
-                <th className={!item.valor_string_10 ? 'hideSeek' : ''}>
-                  {item.valor_string_10}
-                </th>
-                <th className={!item.valor_number_1 ? 'hideSeek' : ''}>
-                  {item.valor_number_1}
-                </th>
-                <th className={!item.valor_number_2 ? 'hideSeek' : ''}>
-                  {item.valor_number_2}
-                </th>
-                <th className={!item.valor_number_3 ? 'hideSeek' : ''}>
-                  {item.valor_number_3}
-                </th>
-                <th className={!item.valor_number_4 ? 'hideSeek' : ''}>
-                  {item.valor_number_4}
-                </th>
-                <th className={!item.valor_number_5 ? 'hideSeek' : ''}>
-                  {item.valor_number_5}
-                </th>
-                <th className={!item.valor_date_1 ? 'hideSeek' : ''}>
-                  {item.valor_date_1}
-                </th>
-                <th className={!item.valor_date_2 ? 'hideSeek' : ''}>
-                  {item.valor_date_2}
-                </th>
-                <th className={!item.valor_date_3 ? 'hideSeek' : ''}>
-                  {item.valor_date_3}
-                </th>
-                <th className="first"></th>
-              </CollumHide>
-            ))}
+            {/* {columnData.map((item, i) => ( */}
+            <CollumHide /* key={i} */>
+              <th className="first"></th>
+              <th className={!columnData.chave_1 ? 'hideSeek' : ''}>
+                {columnData.chave_1}
+              </th>
+              <th className={!columnData.chave_2 ? 'hideSeek' : ''}>
+                {columnData.chave_2}
+              </th>
+              <th className={!columnData.chave_3 ? 'hideSeek' : ''}>
+                {columnData.chave_3}
+              </th>
+              <th className={!columnData.chave_4 ? 'hideSeek' : ''}>
+                {columnData.chave_4}
+              </th>
+              <th className={!columnData.chave_5 ? 'hideSeek' : ''}>
+                {columnData.chave_5}
+              </th>
+              <th className={!columnData.chave_6 ? 'hideSeek' : ''}>
+                {columnData.chave_6}
+              </th>
+              <th className={!columnData.chave_7 ? 'hideSeek' : ''}>
+                {columnData.chave_7}
+              </th>
+              <th className={!columnData.chave_8 ? 'hideSeek' : ''}>
+                {columnData.chave_8}
+              </th>
+              <th className={!columnData.valor_string_1 ? 'hideSeek' : ''}>
+                {columnData.valor_string_1}
+              </th>
+              <th className={!columnData.valor_string_2 ? 'hideSeek' : ''}>
+                {columnData.valor_string_2}
+              </th>
+              <th className={!columnData.valor_string_3 ? 'hideSeek' : ''}>
+                {columnData.valor_string_3}
+              </th>
+              <th className={!columnData.valor_string_4 ? 'hideSeek' : ''}>
+                {columnData.valor_string_4}
+              </th>
+              <th className={!columnData.valor_string_5 ? 'hideSeek' : ''}>
+                {columnData.valor_string_5}
+              </th>
+              <th className={!columnData.valor_string_6 ? 'hideSeek' : ''}>
+                {columnData.valor_string_6}
+              </th>
+              <th className={!columnData.valor_string_7 ? 'hideSeek' : ''}>
+                {columnData.valor_string_7}
+              </th>
+              <th className={!columnData.valor_string_8 ? 'hideSeek' : ''}>
+                {columnData.valor_string_8}
+              </th>
+              <th className={!columnData.valor_string_9 ? 'hideSeek' : ''}>
+                {columnData.valor_string_9}
+              </th>
+              <th className={!columnData.valor_string_10 ? 'hideSeek' : ''}>
+                {columnData.valor_string_10}
+              </th>
+              <th className={!columnData.valor_number_1 ? 'hideSeek' : ''}>
+                {columnData.valor_number_1}
+              </th>
+              <th className={!columnData.valor_number_2 ? 'hideSeek' : ''}>
+                {columnData.valor_number_2}
+              </th>
+              <th className={!columnData.valor_number_3 ? 'hideSeek' : ''}>
+                {columnData.valor_number_3}
+              </th>
+              <th className={!columnData.valor_number_4 ? 'hideSeek' : ''}>
+                {columnData.valor_number_4}
+              </th>
+              <th className={!columnData.valor_number_5 ? 'hideSeek' : ''}>
+                {columnData.valor_number_5}
+              </th>
+              <th className={!columnData.valor_date_1 ? 'hideSeek' : ''}>
+                {columnData.valor_date_1}
+              </th>
+              <th className={!columnData.valor_date_2 ? 'hideSeek' : ''}>
+                {columnData.valor_date_2}
+              </th>
+              <th className={!columnData.valor_date_3 ? 'hideSeek' : ''}>
+                {columnData.valor_date_3}
+              </th>
+              <th className="first"></th>
+            </CollumHide>
+            {/* ))} */}
           </thead>
           <tbody>
-            {gatheredData.map((item: IDados, i: number) => (
+            {gatheredData.map((item: IGatheredDados, i: number) => (
               <CollumHide key={i}>
-                <td></td>
-                <td className={!item.chave_1 ? 'hideSeek' : ''}>
+                <td>{item.option}</td>
+                <td className={!columnData.chave_1 ? 'hideSeek' : ''}>
                   <input
                     type="number"
                     value={item.chave_1}
@@ -238,7 +270,7 @@ export default function DadosCadastros() {
                     }}
                   />
                 </td>
-                <td className={!item.chave_2?.trim() ? 'hideSeek' : ''}>
+                <td className={!columnData.chave_2?.trim() ? 'hideSeek' : ''}>
                   <input
                     type="text"
                     value={item.chave_2}
@@ -250,7 +282,7 @@ export default function DadosCadastros() {
                     }}
                   />
                 </td>
-                <td className={!item.chave_3?.trim() ? 'hideSeek' : ''}>
+                <td className={!columnData.chave_3?.trim() ? 'hideSeek' : ''}>
                   <input
                     type="text"
                     value={item.chave_3}
@@ -261,7 +293,7 @@ export default function DadosCadastros() {
                     }}
                   />
                 </td>
-                <td className={!item.chave_4?.trim() ? 'hideSeek' : ''}>
+                <td className={!columnData.chave_4?.trim() ? 'hideSeek' : ''}>
                   <input
                     type="text"
                     value={item.chave_4}
@@ -272,7 +304,7 @@ export default function DadosCadastros() {
                     }}
                   />
                 </td>
-                <td className={!item.chave_5?.trim() ? 'hideSeek' : ''}>
+                <td className={!columnData.chave_5?.trim() ? 'hideSeek' : ''}>
                   <input
                     type="text"
                     value={item.chave_5}
@@ -283,7 +315,7 @@ export default function DadosCadastros() {
                     }}
                   />
                 </td>
-                <td className={!item.chave_6?.trim() ? 'hideSeek' : ''}>
+                <td className={!columnData.chave_6?.trim() ? 'hideSeek' : ''}>
                   <input
                     type="text"
                     value={item.chave_6}
@@ -294,7 +326,7 @@ export default function DadosCadastros() {
                     }}
                   />
                 </td>
-                <td className={!item.chave_7?.trim() ? 'hideSeek' : ''}>
+                <td className={!columnData.chave_7?.trim() ? 'hideSeek' : ''}>
                   <input
                     type="text"
                     value={item.chave_7}
@@ -319,7 +351,7 @@ export default function DadosCadastros() {
                     }}
                   />
                 </td>
-                <td className={!item.valor_string_1 ? 'hideSeek' : ''}>
+                <td className={!columnData.valor_string_1 ? 'hideSeek' : ''}>
                   <input
                     type="text"
                     value={item.valor_string_1}
@@ -330,7 +362,7 @@ export default function DadosCadastros() {
                     }}
                   />
                 </td>
-                <td className={!item.valor_string_2 ? 'hideSeek' : ''}>
+                <td className={!columnData.valor_string_2 ? 'hideSeek' : ''}>
                   <input
                     type="text"
                     value={item.valor_string_2}
@@ -341,7 +373,7 @@ export default function DadosCadastros() {
                     }}
                   />
                 </td>
-                <td className={!item.valor_string_3 ? 'hideSeek' : ''}>
+                <td className={!columnData.valor_string_3 ? 'hideSeek' : ''}>
                   <input
                     type="text"
                     value={item.valor_string_3}
@@ -352,7 +384,7 @@ export default function DadosCadastros() {
                     }}
                   />
                 </td>
-                <td className={!item.valor_string_4 ? 'hideSeek' : ''}>
+                <td className={!columnData.valor_string_4 ? 'hideSeek' : ''}>
                   <input
                     type="text"
                     value={item.valor_string_4}
@@ -363,7 +395,7 @@ export default function DadosCadastros() {
                     }}
                   />
                 </td>
-                <td className={!item.valor_string_5 ? 'hideSeek' : ''}>
+                <td className={!columnData.valor_string_5 ? 'hideSeek' : ''}>
                   <input
                     type="text"
                     value={item.valor_string_5}
@@ -374,7 +406,7 @@ export default function DadosCadastros() {
                     }}
                   />
                 </td>
-                <td className={!item.valor_string_6 ? 'hideSeek' : ''}>
+                <td className={!columnData.valor_string_6 ? 'hideSeek' : ''}>
                   <input
                     type="text"
                     value={item.valor_string_6}
@@ -385,7 +417,7 @@ export default function DadosCadastros() {
                     }}
                   />
                 </td>
-                <td className={!item.valor_string_7 ? 'hideSeek' : ''}>
+                <td className={!columnData.valor_string_7 ? 'hideSeek' : ''}>
                   <input
                     type="text"
                     value={item.valor_string_7}
@@ -396,7 +428,7 @@ export default function DadosCadastros() {
                     }}
                   />
                 </td>
-                <td className={!item.valor_string_8 ? 'hideSeek' : ''}>
+                <td className={!columnData.valor_string_8 ? 'hideSeek' : ''}>
                   <input
                     type="text"
                     value={item.valor_string_8}
@@ -407,7 +439,7 @@ export default function DadosCadastros() {
                     }}
                   />
                 </td>
-                <td className={!item.valor_string_9 ? 'hideSeek' : ''}>
+                <td className={!columnData.valor_string_9 ? 'hideSeek' : ''}>
                   <input
                     type="text"
                     value={item.valor_string_9}
@@ -418,7 +450,7 @@ export default function DadosCadastros() {
                     }}
                   />
                 </td>
-                <td className={!item.valor_string_10 ? 'hideSeek' : ''}>
+                <td className={!columnData.valor_string_10 ? 'hideSeek' : ''}>
                   <input
                     type="text"
                     value={item.valor_string_10}
@@ -429,7 +461,7 @@ export default function DadosCadastros() {
                     }}
                   />
                 </td>
-                <td className={!item.valor_number_1 ? 'hideSeek' : ''}>
+                <td className={!columnData.valor_number_1 ? 'hideSeek' : ''}>
                   <input
                     type="number"
                     value={item.valor_number_1}
@@ -440,7 +472,7 @@ export default function DadosCadastros() {
                     }}
                   />
                 </td>
-                <td className={!item.valor_number_2 ? 'hideSeek' : ''}>
+                <td className={!columnData.valor_number_2 ? 'hideSeek' : ''}>
                   <input
                     type="number"
                     value={item.valor_number_2}
@@ -453,7 +485,7 @@ export default function DadosCadastros() {
                 </td>
                 <td
                   className={
-                    !item.valor_number_3 || item.valor_number_3 === '0'
+                    !columnData.valor_number_3 /*  || item.valor_number_3 === '0' */
                       ? 'hideSeek'
                       : ''
                   }
@@ -470,7 +502,7 @@ export default function DadosCadastros() {
                 </td>
                 <td
                   className={
-                    !item.valor_number_4 || item.valor_number_4 === '0'
+                    !columnData.valor_number_4 /* || item.valor_number_4 === '0' */
                       ? 'hideSeek'
                       : ''
                   }
@@ -487,7 +519,7 @@ export default function DadosCadastros() {
                 </td>
                 <td
                   className={
-                    !item.valor_number_5 || item.valor_number_5 === '0'
+                    !columnData.valor_number_5 /* || item.valor_number_5 === '0' */
                       ? 'hideSeek'
                       : ''
                   }
@@ -550,16 +582,15 @@ export default function DadosCadastros() {
           </tbody>
         </table>
       </TableGrid>
+      <Pages>
+        <Pagination
+          onChange={handleChange}
+          count={quantityPage}
+          shape="rounded"
+        />
+      </Pages>
     </>
   );
 }
 
 DadosCadastros.auth = true;
-
-/*
- onChange={e => {
-                        const newAppData = [...appData];
-                        newAppData[i].chave_2 = e.target.value;
-                        setAppData(newAppData);
-                      }}
-*/

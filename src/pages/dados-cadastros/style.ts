@@ -27,6 +27,7 @@ export const CollumHide = styled.tr`
   input {
     border: none;
     text-align: center;
+    cursor: pointer;
   }
 
   /* Chrome, Safari, Edge, Opera */
