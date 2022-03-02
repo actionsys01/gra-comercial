@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { PopStyle, PopStyleDouble, PopStyleFourLines } from './style';
+import {
+  PopStyle,
+  PopStyleDouble,
+  PopStyleFourLines,
+  PopSingleStyle,
+} from './style';
 import { BsThreeDots } from 'react-icons/bs';
 
 const Popover = (props: any) => {
@@ -10,6 +15,28 @@ const Popover = (props: any) => {
   const visibleHandler = () => {
     setVisible(!visible);
   };
+
+  if (props.quant === 1) {
+    return (
+      <>
+        <PopSingleStyle>
+          <BsThreeDots onClick={visibleHandler} />
+          {visible && (
+            <div
+              onMouseLeave={() => setVisible(false)}
+              /*  className={props.num === 7 ? "last-prop" : props.num === 6 ? "beforeLast-prop" : ""} */
+            >
+              {props?.content?.map((item: any, i: any) => (
+                <p key={i} onClick={item.onClick}>
+                  {item.optionName}
+                </p>
+              ))}
+            </div>
+          )}
+        </PopSingleStyle>
+      </>
+    );
+  }
 
   if (props.quant === 2) {
     return (
