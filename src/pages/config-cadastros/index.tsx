@@ -38,10 +38,12 @@ export default function ConfigCadastros() {
     setPage(value - 1);
   };
 
+  // console.log('query', router.query.cod)
+
   const getConfigByCategoryCodePageData = useCallback(async () => {
     try {
       const response = await request.GetCategoryByService(
-        String(router.query.cod),
+        Number(router.query.cod),
       );
       const data = paginate(response.data);
       setData(data[page]);
