@@ -1,3 +1,5 @@
+import { number } from "yup";
+
 export interface IDados {
   [x: string]: any;
   // [x: string]: any;
@@ -10,7 +12,7 @@ export interface IDados {
   chave_6?: string;
   chave_7?: string;
   chave_8?: Date;
-  cod_categoria: string;
+  cod_categoria: number;
   desc_aplicacao: string;
   valor_date_1?: Date;
   valor_date_2?: Date;
@@ -30,6 +32,7 @@ export interface IDados {
   valor_string_8?: string;
   valor_string_9?: string;
   valor_string_10?: string;
+  active: boolean;
 }
 export interface IGatheredDados {
   id: number;
@@ -75,7 +78,7 @@ export interface ICreateDados {
   chave_6?: string;
   chave_7?: string;
   chave_8?: Date;
-  cod_categoria: string;
+  cod_categoria: number;
   desc_aplicacao: string;
   valor_date_1?: Date;
   valor_date_2?: Date;
