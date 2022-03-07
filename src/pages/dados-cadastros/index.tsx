@@ -40,6 +40,7 @@ export default function DadosCadastros() {
   const [columnData, setColumnData] = useState({} as IConfigData);
   const [appData, setAppData] = useState<IDados[]>([]);
   const [dates, setDates] = useState({ ...initialValues });
+  const [dataActive, setDataActive] = useState(false);
   const [dataId, setDataId] = useState(0);
   const [mainData, setMainData] = useState({
     id_empresa: Number(session?.usuario.empresa.id),
@@ -56,6 +57,9 @@ export default function DadosCadastros() {
       setColumnData(data);
       setAppData(pageData[page]);
       setQuantityPage(Math.ceil(pageData.length));
+      if (!response.data.cadastro_dados_id.length) {
+        getValidColumns();
+      }
       data.chave_8 && setDates({ ...dates, chave_8: true });
       data.valor_date_1 && setDates({ ...dates, valor_date_1: true });
       data.valor_date_2 && setDates({ ...dates, valor_date_2: true });
@@ -78,8 +82,10 @@ export default function DadosCadastros() {
   }, [page]);
 
   async function saveChanges() {
+    const newData = appData.filter(item => item.active);
+    console.log('newData', newData);
     try {
-      await appData.forEach(async data => {
+      await newData.forEach(async data => {
         await request.CreateDado({
           id_empresa: mainData.id_empresa,
           // cod_categoria: String(mainData.cod_categoria),
@@ -87,7 +93,6 @@ export default function DadosCadastros() {
           // desc_aplicacao: String(mainData.desc_aplicacao),
           ...data,
         });
-        // .then(() => console.log('Update concluído!'));
       });
       setToast({
         text: 'Cadastro concluído',
@@ -108,11 +113,19 @@ export default function DadosCadastros() {
       appData.forEach((item, i) => {
         allData.push({
           ...item,
+          active: item.id && dataActive,
           option: (
             <Popover
               num={i}
-              quant={1}
+              quant={2}
               content={[
+                {
+                  optionName: 'Editar',
+                  onClick: () => {
+                    item.active = true;
+                  },
+                  className: 'able',
+                },
                 {
                   optionName: 'Excluir',
                   onClick: () => {
@@ -128,7 +141,7 @@ export default function DadosCadastros() {
     }
     // console.log('allData', allData);
     return allData;
-  }, [appData]);
+  }, [appData, dataId]);
 
   async function getValidColumns() {
     const newAppData = [...appData];
@@ -141,6 +154,10 @@ export default function DadosCadastros() {
       setPage(0);
     }
   }, [page, quantityPage]);
+
+  // useEffect(() => {
+  //   console.log('appData', appData);
+  // }, [appData]);
 
   return (
     <>
@@ -279,7 +296,9 @@ export default function DadosCadastros() {
                       const newAppData = [...appData];
                       newAppData[i].chave_2 = e.target.value;
                       setAppData(newAppData);
+                      // setRequestData(newAppData[i].chave_2)
                     }}
+                    // onFocus={() => getValidColumns()}
                   />
                 </td>
                 <td className={!columnData.chave_3?.trim() ? 'hideSeek' : ''}>
@@ -290,7 +309,9 @@ export default function DadosCadastros() {
                       const newAppData = [...appData];
                       newAppData[i].chave_3 = e.target.value;
                       setAppData(newAppData);
+                      // setRequestData(newAppData[i])
                     }}
+                    // onFocus={() => getValidColumns()}
                   />
                 </td>
                 <td className={!columnData.chave_4?.trim() ? 'hideSeek' : ''}>
@@ -301,7 +322,9 @@ export default function DadosCadastros() {
                       const newAppData = [...appData];
                       newAppData[i].chave_4 = e.target.value;
                       setAppData(newAppData);
+                      // setRequestData(newAppData[i])
                     }}
+                    // onFocus={() => getValidColumns()}
                   />
                 </td>
                 <td className={!columnData.chave_5?.trim() ? 'hideSeek' : ''}>
@@ -339,7 +362,7 @@ export default function DadosCadastros() {
                 </td>
                 <td className={!dates.chave_8 ? 'hideSeek' : ''}>
                   <input
-                    type="Date"
+                    type="number"
                     value={
                       item.chave_8 &&
                       format(new Date(item.chave_8), 'dd/MM/yyyy')
@@ -498,6 +521,7 @@ export default function DadosCadastros() {
                       newAppData[i].valor_number_3 = Number(e.target.value);
                       setAppData(newAppData);
                     }}
+                    onFocus={() => getValidColumns()}
                   />
                 </td>
                 <td
