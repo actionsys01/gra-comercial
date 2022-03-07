@@ -1,3 +1,5 @@
+const data = new Date();
+
 export const appInitialValue = {
   // id_empresa: 0,
   // aplicacao: null,
@@ -8,8 +10,8 @@ export const appInitialValue = {
   chave_5: '---',
   chave_6: '---',
   chave_7: '---',
-  chave_8: new Date(),
-  cod_categoria: '',
+  chave_8: new Date('1990-01-25'),
+  cod_categoria: 1,
   desc_aplicacao: '',
   valor_date_1: new Date(),
   valor_date_2: new Date(),
@@ -29,6 +31,7 @@ export const appInitialValue = {
   valor_string_8: '---',
   valor_string_9: '---',
   valor_string_10: '---',
+  active: true,
   // user_insert: null,
   // user_update: null,
 };
