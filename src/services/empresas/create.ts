@@ -7,6 +7,7 @@ interface ICriarEmpresaDTO {
   email: string;
   status: number;
   plano_id: number;
+  user_id: number;
 }
 
 export default async function create(data: ICriarEmpresaDTO) {

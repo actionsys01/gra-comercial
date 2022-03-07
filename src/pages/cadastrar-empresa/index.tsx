@@ -9,6 +9,7 @@ import * as accounts from '@services/planos';
 import { useToasts } from '@geist-ui/react';
 import ModalEmpresa from './modal';
 import MaskedCnpj from '@components/MaskedCnpj';
+import { useSession } from 'next-auth/client';
 export interface AccountProps {
   id: number;
   nome: string;
@@ -22,6 +23,7 @@ export interface AccountProps {
 
 export default function CadastrarEmpresa() {
   const router = useRouter();
+  const [session] = useSession();
   const [company, setCompany] = useState<string>('');
   const [cnpj, setCnpj] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -58,6 +60,7 @@ export default function CadastrarEmpresa() {
         email: email,
         status: 1,
         plano_id: Number(account),
+        user_id: Number(session?.usuario.id),
       });
       setVisibleModal(true);
       setToast({
