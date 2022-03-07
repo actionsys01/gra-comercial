@@ -68,7 +68,7 @@ export default function CategoriasAplicativos() {
                   onClick: () =>
                     router.push({
                       pathname: 'config-cadastros',
-                      query: { cod: item.cod_categoria },
+                      query: { cod: item.id },
                     }),
                   className: 'able',
                 },
@@ -113,6 +113,9 @@ export default function CategoriasAplicativos() {
   if (loading) {
     return <Loader />;
   }
+
+  // useEffect(() => {
+  // }, []);
 
   return (
     <>
