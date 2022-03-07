@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/client';
 import { useToasts } from '@geist-ui/react';
 import Head from 'next/head';
-import { Plus, Filter } from '@geist-ui/react-icons';
+import { PlusSquare, Filter } from '@geist-ui/react-icons';
 import { Pages } from '@styles/pages';
 import Pagination from '@material-ui/lab/Pagination';
 import { useRouter } from 'next/router';
@@ -14,7 +14,7 @@ import { BtnRow } from '@styles/buttons';
 import BotaoVoltar from '@components/BotaoVoltar';
 import * as request from '@services/categorias/';
 import { IConfigData } from '@services/categorias/cadastro-config/types';
-import { CollumHide } from './style';
+import { CollumHide, IconBtn } from './style';
 import {
   IDados,
   IGatheredDados,
@@ -83,7 +83,7 @@ export default function DadosCadastros() {
 
   async function saveChanges() {
     const newData = appData.filter(item => item.active);
-    console.log('newData', newData);
+    // console.log('newData', newData);
     try {
       await newData.forEach(async data => {
         await request.CreateDado({
@@ -167,7 +167,7 @@ export default function DadosCadastros() {
       <BotaoVoltar />
       <h2>{`Cadastro de ${router.query.app}`} </h2>
       <BtnRow>
-        <button onClick={() => getValidColumns()}>
+        <button>
           <span>
             <Filter />
           </span>
@@ -605,6 +605,9 @@ export default function DadosCadastros() {
             ))}
           </tbody>
         </table>
+        <IconBtn>
+          <PlusSquare onClick={() => getValidColumns()} />
+        </IconBtn>
       </TableGrid>
       <Pages>
         <Pagination
