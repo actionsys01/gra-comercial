@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/client';
 import { useToasts } from '@geist-ui/react';
-import { Plus, Filter } from '@geist-ui/react-icons';
+import { Plus } from '@geist-ui/react-icons';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { ICategories } from '@services/categorias/cadastro-categorias/types';
@@ -11,8 +11,10 @@ import Pagination from '@material-ui/lab/Pagination';
 import { TableGrid } from '@styles/tableStyle';
 import Popover from '@components/Popover';
 import Loader from '@components/Loader';
-import { BtnRow } from '@styles/buttons';
+import { AddBtn } from '@styles/buttons';
 import CategoryModal from './modal';
+import Filtro from '@components/Filtro-cadastros/Filter-Modal';
+import { useFiltro } from '@contexts/filtro-cadastros';
 
 export interface IData {
   cod_categoria: string;
@@ -22,7 +24,6 @@ export interface IData {
 
 export default function CategoriasAplicativos() {
   const [, setToast] = useToasts();
-  const [session] = useSession();
   const router = useRouter();
 
   const [data, setData] = useState<ICategories[]>([]);
@@ -32,13 +33,15 @@ export default function CategoriasAplicativos() {
   const [visibleModal, setVisibleModal] = useState(false);
   const [category, setCategory] = useState('');
 
+  const { categorias } = useFiltro();
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
   const getCategoriesPagesData = useCallback(async () => {
     try {
-      const response = await request.getCategoriesPagination(page);
+      const response = await request.getCategoriesPagination(page, categorias);
       const data = response.data;
       // console.log('data', data.categorias);
       setLoading(false);
@@ -51,7 +54,7 @@ export default function CategoriasAplicativos() {
         type: 'warning',
       });
     }
-  }, [page]);
+  }, [page, categorias]);
 
   const gatheredData = useMemo(() => {
     const allData: IData[] = [];
@@ -102,7 +105,7 @@ export default function CategoriasAplicativos() {
 
   useEffect(() => {
     getCategoriesPagesData();
-  }, [page]);
+  }, [page, categorias]);
 
   useEffect(() => {
     if (page > quantityPage) {
@@ -123,13 +126,8 @@ export default function CategoriasAplicativos() {
         <title>Orion | Categorias</title>
       </Head>
       <h2>Categorias de Aplicativos</h2>
-      <BtnRow>
-        <button>
-          <span>
-            <Filter />
-          </span>
-          Filtrar
-        </button>
+      <AddBtn style={{ gap: '10px' }}>
+        <Filtro data={categorias} abaAtual={'categorias'} />
         <button
           onClick={() =>
             router.push({
@@ -142,7 +140,7 @@ export default function CategoriasAplicativos() {
           </span>
           Adicionar
         </button>
-      </BtnRow>
+      </AddBtn>
       <TableGrid>
         <table>
           <thead>

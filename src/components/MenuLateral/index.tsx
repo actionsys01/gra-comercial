@@ -1,4 +1,4 @@
-import { useFiltro } from '@contexts/filtro';
+
 import { useMediaQuery } from '@geist-ui/react';
 import {
   ChevronsLeft,
@@ -33,12 +33,12 @@ export default function MenuLateral({
 }: IProps) {
   const [session] = useSession();
   const router = useRouter();
-  const { limpar } = useFiltro();
+
 
   const isMD = useMediaQuery('lg');
 
   async function sair() {
-    await limpar();
+    // await limpar();
     signOut();
   }
 

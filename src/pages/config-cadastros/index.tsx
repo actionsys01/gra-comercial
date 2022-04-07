@@ -9,12 +9,14 @@ import { useRouter } from 'next/router';
 import { TableGrid } from '@styles/tableStyle';
 import Popover from '@components/Popover';
 import Loader from '@components/Loader';
-import { BtnRow } from '@styles/buttons';
+import { AddBtn } from '@styles/buttons';
 import * as request from '@services/categorias';
 import { IConfigData } from '@services/categorias/cadastro-config/types';
 import BotaoVoltar from '@components/BotaoVoltar';
 import paginate from '@utils/paginate';
 import DeleteModal from './modal';
+import { useFiltro } from '@contexts/filtro-cadastros';
+import Filtro from '@components/Filtro-cadastros/Filter-Modal';
 
 export interface IData {
   aplicacao: string;
@@ -34,6 +36,8 @@ export default function ConfigCadastros() {
   const [loading, setLoading] = useState(true);
   const [visibleModal, setVisibleModal] = useState(false);
 
+  const { configApps } = useFiltro();
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value - 1);
   };
@@ -42,7 +46,10 @@ export default function ConfigCadastros() {
 
   const getConfigByCategoryCodePageData = useCallback(async () => {
     try {
-      const response = await request.GetCategoryById(Number(router.query.cod));
+      const response = await request.GetCategoryById(
+        Number(router.query.cod),
+        configApps,
+      );
       const data = paginate(response.data);
       setData(data[page]);
       setQuantityPage(Math.ceil(data.length));
@@ -54,7 +61,7 @@ export default function ConfigCadastros() {
         type: 'warning',
       });
     }
-  }, [page]);
+  }, [page, configApps]);
 
   const gatheredData = useMemo(() => {
     const allData: IData[] = [];
@@ -112,7 +119,7 @@ export default function ConfigCadastros() {
 
   useEffect(() => {
     getConfigByCategoryCodePageData();
-  }, [page]);
+  }, [page, configApps]);
 
   if (loading) {
     return <Loader />;
@@ -125,13 +132,8 @@ export default function ConfigCadastros() {
       </Head>
       <BotaoVoltar />
       <h2>Aplicativos</h2>
-      <BtnRow>
-        <button>
-          <span>
-            <Filter />
-          </span>
-          Filtrar
-        </button>
+      <AddBtn style={{ gap: '10px' }}>
+        <Filtro data={configApps} abaAtual={'config'} />
         <button
           onClick={() =>
             router.push({
@@ -145,7 +147,7 @@ export default function ConfigCadastros() {
           </span>
           Adicionar
         </button>
-      </BtnRow>
+      </AddBtn>
       <TableGrid>
         <table>
           <thead>
