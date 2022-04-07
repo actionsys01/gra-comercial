@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/client';
 import { useToasts } from '@geist-ui/react';
-import { Plus, Filter } from '@geist-ui/react-icons';
+import { Plus } from '@geist-ui/react-icons';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { ICategories } from '@services/categorias/cadastro-categorias/types';
@@ -24,7 +24,6 @@ export interface IData {
 
 export default function CategoriasAplicativos() {
   const [, setToast] = useToasts();
-  const [session] = useSession();
   const router = useRouter();
 
   const [data, setData] = useState<ICategories[]>([]);
@@ -128,7 +127,7 @@ export default function CategoriasAplicativos() {
       </Head>
       <h2>Categorias de Aplicativos</h2>
       <AddBtn style={{ gap: '10px' }}>
-        <Filtro data={categorias} />
+        <Filtro data={categorias} abaAtual={'categorias'} />
         <button
           onClick={() =>
             router.push({
