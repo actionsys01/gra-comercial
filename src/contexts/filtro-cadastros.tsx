@@ -12,7 +12,9 @@ interface IUnformCompare {
 
 interface IFilter {
   categorias: IUnformCompare[];
+  configApps: IUnformCompare[];
   registerCategory(categorias: IUnformCompare[]): void;
+  registerConfigApp(apps: IUnformCompare[]): void;
   cleanFilter(): void;
   // scopeIgnition(filtro: IUnformCompare[]): IUnformCompare[];
 }
@@ -29,12 +31,17 @@ export function useFiltro() {
 
 export default function FiltroContextProvider({ children }: IFiltroProps) {
   const [categorias, setCategorias] = useState<IUnformCompare[]>([]);
+  const [configApps, setConfigApps] = useState<IUnformCompare[]>([]);
 
   useEffect(() => {
     async function carregarStorage() {
       const categoryStorage = localStorage.getItem('@orion:categorias');
+      const configStorage = localStorage.getItem('@orion:configApps');
       if (categoryStorage) {
         setCategorias(JSON.parse(categoryStorage));
+      }
+      if (configStorage) {
+        setConfigApps(JSON.parse(configStorage));
       }
     }
     carregarStorage();
@@ -43,6 +50,11 @@ export default function FiltroContextProvider({ children }: IFiltroProps) {
   function registerCategory(category: IUnformCompare[]) {
     setCategorias(category);
     localStorage.setItem('@orion:categorias', JSON.stringify(category));
+  }
+
+  function registerConfigApp(apps: IUnformCompare[]) {
+    setConfigApps(apps);
+    localStorage.setItem('@orion:configApps', JSON.stringify(apps));
   }
 
   // function scopeIgnition(array: IUnformCompare[]): IUnformCompare[] {
@@ -59,11 +71,12 @@ export default function FiltroContextProvider({ children }: IFiltroProps) {
 
   async function cleanFilter() {
     localStorage.setItem('@orion:categorias', JSON.stringify([]));
+    localStorage.setItem('@orion:configApps', JSON.stringify([]));
   }
 
-  // useEffect(() => {
-  //   console.log('categorias', categorias)
-  // }, [categorias])
+  useEffect(() => {
+    console.log('configApps', configApps);
+  }, [configApps]);
 
   return (
     <FiltroCadastroContext.Provider
@@ -71,6 +84,8 @@ export default function FiltroContextProvider({ children }: IFiltroProps) {
         categorias,
         registerCategory,
         cleanFilter,
+        registerConfigApp,
+        configApps,
         // scopeIgnition,
       }}
     >
