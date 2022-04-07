@@ -23,13 +23,13 @@ interface IFilter {
   compare: string;
 }
 interface IProps {
-  // abaAtual: 'nfe' | 'cte' | 'nfse';
+  abaAtual: 'categorias' | 'config';
   data: IFilter[];
 }
 
-export default function Filtro({ data }: IProps) {
+export default function Filtro({ abaAtual, data }: IProps) {
   const formRef = useRef<FormHandles>(null);
-  const { registerCategory} = useFiltro();
+  const { registerCategory, registerConfigApp } = useFiltro();
 
   const [erro, setErro] = useState(false);
   const [filtros, setFiltros] = useState<string[]>([]);
@@ -70,7 +70,7 @@ export default function Filtro({ data }: IProps) {
   const handleSubmit: SubmitHandler = (data: FormData) => {
     // console.log('data', data.filtros);
     if (data.filtros === undefined) {
-      registerCategory([]);
+      abaAtual == 'categorias' ? registerCategory([]) : registerConfigApp([]);
       setErro(false);
       setModalVisivel(false);
       return;
@@ -83,7 +83,9 @@ export default function Filtro({ data }: IProps) {
       return;
     } else {
       // const filtro = scopeIgnition(data.filtros);
-      registerCategory(data.filtros);
+      abaAtual == 'categorias'
+        ? registerCategory(data.filtros)
+        : registerConfigApp(data.filtros);
     }
 
     setErro(false);
@@ -99,7 +101,7 @@ export default function Filtro({ data }: IProps) {
         return;
       }
     }
-    registerCategory([]);
+    abaAtual == 'categorias' ? registerCategory([]) : registerConfigApp([]);
     setErro(false);
     setModalVisivel(false);
   }
