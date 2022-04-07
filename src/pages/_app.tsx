@@ -1,13 +1,14 @@
 import { Container, Main } from '@components/App/index';
 import MenuLateral from '@components/MenuLateral';
 import PaginaCarregamento from '@components/PaginaCarregamento';
-import FiltroProvider from '@contexts/filtro';
+// import FiltroProvider from '@contexts/filtro';
 import {
   CssBaseline,
   GeistProvider,
   Themes,
   useMediaQuery,
 } from '@geist-ui/react';
+import FiltroContextProvider from '@contexts/filtro-cadastros';
 import { AlignCenter } from '@geist-ui/react-icons';
 import 'inter-ui/inter.css';
 import { Provider, useSession } from 'next-auth/client';
@@ -59,7 +60,7 @@ export default function App({ Component, pageProps }: any) {
     <Provider session={pageProps.session}>
       <GeistProvider themes={[orionTheme]} themeType="orion">
         <CssBaseline />
-        <FiltroProvider>
+        <FiltroContextProvider>
           <ThemeProvider theme={orionTheme}>
             <Head>
               <link
@@ -87,7 +88,7 @@ export default function App({ Component, pageProps }: any) {
               <Component {...pageProps} />
             )}
           </ThemeProvider>
-        </FiltroProvider>
+        </FiltroContextProvider>
       </GeistProvider>
     </Provider>
   );
