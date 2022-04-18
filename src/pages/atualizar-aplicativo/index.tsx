@@ -97,6 +97,7 @@ export default function AtualizarAplicativo() {
             <input
               type="text"
               id="nome"
+              maxLength={20}
               value={mainData.aplicacao}
               disabled
               // onChange={e =>
@@ -120,6 +121,7 @@ export default function AtualizarAplicativo() {
             type="text"
             id="descricao"
             className="description"
+            maxLength={50}
             value={register.desc_aplicacao}
             onChange={e =>
               setRegister({ ...register, desc_aplicacao: e.target.value })
