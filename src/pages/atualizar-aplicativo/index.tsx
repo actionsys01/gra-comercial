@@ -121,7 +121,7 @@ export default function AtualizarAplicativo() {
             type="text"
             id="descricao"
             className="description"
-            maxLength={20}
+            maxLength={50}
             value={register.desc_aplicacao}
             onChange={e =>
               setRegister({ ...register, desc_aplicacao: e.target.value })
