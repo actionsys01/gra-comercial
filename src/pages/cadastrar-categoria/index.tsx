@@ -56,6 +56,7 @@ export default function CadastroCategoria() {
           <input
             type="text"
             id="title"
+            maxLength={20}
             onChange={e => setRegister({ ...register, name: e.target.value })}
           />
         </InputStyles>
@@ -65,6 +66,7 @@ export default function CadastroCategoria() {
             type="text"
             id="description"
             className="description"
+            maxLength={100}
             onChange={e =>
               setRegister({ ...register, description: e.target.value })
             }
